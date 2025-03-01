@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://dtnlo12wmafcs"]
+
+[ext_resource type="Script" path="res://scripts/DashGhost.gd" id="1_j0qvo"]
+
+[node name="DashGhost" type="Sprite2D"]
+script = ExtResource("1_j0qvo")
+
+[node name="Timer" type="Timer" parent="."]

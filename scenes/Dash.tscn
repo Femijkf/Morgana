@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://djmok78nulvej"]
+
+[ext_resource type="Script" path="res://scripts/Dash.gd" id="1_85top"]
+
+[node name="Dash" type="Node2D"]
+script = ExtResource("1_85top")
+
+[node name="DurationTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="GhostTimer" type="Timer" parent="."]
+wait_time = 0.03
+
+[connection signal="timeout" from="DurationTimer" to="." method="_on_duration_timer_timeout"]
+[connection signal="timeout" from="GhostTimer" to="." method="_on_ghost_timer_timeout"]
