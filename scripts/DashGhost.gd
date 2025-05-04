@@ -11,11 +11,11 @@ func initialize(texture: Texture2D, position: Vector2, region_rect: Rect2, flip_
 	self.region_rect = region_rect
 	self.flip_h = flip_h
 	modulate = color  # Apply the color to the ghost
-	self.z_index = -1
+	self.z_index = 0
 
 func _ready():
 	timer.start()  # Start the timer when the ghost is created
-	timer.timeout.connect(_on_timer_timeout)  # Correctly connect signal in Godot 4
+	timer.timeout.connect(_on_timer_timeout)
 
 func _process(delta):
 	# Gradually fade out the ghost

@@ -1,7 +1,7 @@
 [gd_scene load_steps=48 format=3 uid="uid://c7rxwvk1vaqma"]
 
 [ext_resource type="Texture2D" uid="uid://b0ps7f2go0vo0" path="res://assets/spritesheets/Kyra Sprite Sheet.png" id="1_e7yx1"]
-[ext_resource type="Script" path="res://scripts/player.gd" id="1_gmuu8"]
+[ext_resource type="Script" uid="uid://bf6vb5u1ne0l0" path="res://scripts/player.gd" id="1_gmuu8"]
 [ext_resource type="Texture2D" uid="uid://cdjxfh71fuv86" path="res://assets/spritesheets/wall-jump-sheet.png" id="3_gxyrw"]
 [ext_resource type="Texture2D" uid="uid://ccneadlhqfoy5" path="res://assets/spritesheets/Morgana Movement Spritesheet.png" id="4_gslpk"]
 [ext_resource type="Shape2D" uid="uid://cdyksvyl0lbwi" path="res://resources/morgana_collision_shape.tres" id="5_a8ip8"]
@@ -445,19 +445,19 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_hrffs"]
 _data = {
-"RESET": SubResource("Animation_vw8xb"),
-"crouch_idle": SubResource("Animation_bs3mx"),
-"crouch_walk": SubResource("Animation_h1b4t"),
-"dash": SubResource("Animation_ghv46"),
-"fall": SubResource("Animation_ki3ia"),
-"idle": SubResource("Animation_sdffb"),
-"jump": SubResource("Animation_klst4"),
-"land": SubResource("Animation_kt22h"),
-"peak": SubResource("Animation_anltr"),
-"run": SubResource("Animation_vssxc"),
-"takeoff": SubResource("Animation_t4lax"),
-"walljump": SubResource("Animation_ar7q7"),
-"wallslide": SubResource("Animation_hsbjr")
+&"RESET": SubResource("Animation_vw8xb"),
+&"crouch_idle": SubResource("Animation_bs3mx"),
+&"crouch_walk": SubResource("Animation_h1b4t"),
+&"dash": SubResource("Animation_ghv46"),
+&"fall": SubResource("Animation_ki3ia"),
+&"idle": SubResource("Animation_sdffb"),
+&"jump": SubResource("Animation_klst4"),
+&"land": SubResource("Animation_kt22h"),
+&"peak": SubResource("Animation_anltr"),
+&"run": SubResource("Animation_vssxc"),
+&"takeoff": SubResource("Animation_t4lax"),
+&"walljump": SubResource("Animation_ar7q7"),
+&"wallslide": SubResource("Animation_hsbjr")
 }
 
 [node name="Player" type="CharacterBody2D"]
@@ -470,6 +470,7 @@ sprite_frames = SubResource("SpriteFrames_1sfi7")
 animation = &"wallslide"
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = 1
 position = Vector2(0, -24.5)
 texture = ExtResource("4_gslpk")
 hframes = 19
@@ -481,7 +482,7 @@ shape = ExtResource("5_a8ip8")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_hrffs")
+&"": SubResource("AnimationLibrary_hrffs")
 }
 
 [node name="RightWall" type="RayCast2D" parent="."]

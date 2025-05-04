@@ -1,0 +1,86 @@
+[gd_scene load_steps=6 format=3 uid="uid://canvcjcoa7s61"]
+
+[ext_resource type="Script" uid="uid://u8yuv74cw2my" path="res://scripts/healthbar.gd" id="1_5ysmq"]
+[ext_resource type="PackedScene" uid="uid://bawha83a8d3c8" path="res://scenes/HealthBar.tscn" id="1_oo0fn"]
+[ext_resource type="FontFile" uid="uid://c76nvt8f7lnj3" path="res://assets/fonts/PixelOperatorHB8.ttf" id="2_5ysmq"]
+
+[sub_resource type="Gradient" id="Gradient_6fi6k"]
+offsets = PackedFloat32Array(0, 0.99, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_uo2fv"]
+gradient = SubResource("Gradient_6fi6k")
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HealthUI" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 6.0
+offset_top = 3.0
+offset_right = 109.0
+offset_bottom = 23.0
+script = ExtResource("1_5ysmq")
+
+[node name="HealthBar" parent="HealthUI" instance=ExtResource("1_oo0fn")]
+layout_mode = 0
+offset_left = 23.0
+offset_top = 6.0
+offset_right = 98.0
+offset_bottom = 11.0
+
+[node name="Sprite2D" type="Sprite2D" parent="HealthUI"]
+modulate = Color(1, 1, 1, 0.294118)
+position = Vector2(9, 8.48359)
+scale = Vector2(0.375, 0.172388)
+texture = SubResource("GradientTexture2D_uo2fv")
+
+[node name="Health" type="Label" parent="HealthUI"]
+layout_mode = 0
+offset_left = -3.0
+offset_top = 4.0
+offset_right = 21.0
+offset_bottom = 14.0
+scale = Vector2(1.00937, 1.00937)
+theme_override_fonts/font = ExtResource("2_5ysmq")
+theme_override_font_sizes/font_size = 8
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HotBar" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 0
+offset_top = 117.0
+offset_right = 62.0
+offset_bottom = 180.0
+
+[node name="Sprite2D" type="Sprite2D" parent="HotBar"]
+modulate = Color(1, 1, 1, 0.294118)
+position = Vector2(30.75, 19.25)
+scale = Vector2(0.214844, 0.289063)
+texture = SubResource("GradientTexture2D_uo2fv")
+
+[node name="Sprite2D2" type="Sprite2D" parent="HotBar"]
+modulate = Color(1, 1, 1, 0.294118)
+position = Vector2(30.875, 47)
+scale = Vector2(0.214844, 0.289063)
+texture = SubResource("GradientTexture2D_uo2fv")
+
+[node name="Sprite2D3" type="Sprite2D" parent="HotBar"]
+modulate = Color(1, 1, 1, 0.294118)
+position = Vector2(14.875, 33)
+scale = Vector2(0.214844, 0.289063)
+texture = SubResource("GradientTexture2D_uo2fv")
+
+[node name="Sprite2D4" type="Sprite2D" parent="HotBar"]
+modulate = Color(1, 1, 1, 0.294118)
+position = Vector2(46.875, 33)
+scale = Vector2(0.214844, 0.289063)
+texture = SubResource("GradientTexture2D_uo2fv")

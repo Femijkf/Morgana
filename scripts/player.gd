@@ -205,7 +205,7 @@ func spawnDashGhost():
 	
 	var ghost = DashGhost.instantiate()
 	var region_rect = Rect2(0, 455, 65, 65)  # Adjust these values for the dash frame
-	var ghost_position = global_position + Vector2(2, -25)
+	var ghost_position = global_position + Vector2(-250, -176)
 	var ghost_color = Color(255, 255, 255, 0.8)  # Red color with 80% opacity
 
 	ghost.initialize(sprite_2d.texture, ghost_position, region_rect, sprite_2d.flip_h, ghost_color)

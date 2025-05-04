@@ -1,4 +1,4 @@
-[gd_scene load_steps=72 format=3 uid="uid://cragumjc34c07"]
+[gd_scene load_steps=74 format=3 uid="uid://cragumjc34c07"]
 
 [ext_resource type="Texture2D" uid="uid://doim43nm12rtr" path="res://assets/tiles/Tiles-11.png" id="1_3qmot"]
 [ext_resource type="PackedScene" uid="uid://c7rxwvk1vaqma" path="res://scenes/player.tscn" id="1_ofxhw"]
@@ -23,7 +23,7 @@
 [ext_resource type="Texture2D" uid="uid://3v5nflieak7w" path="res://assets/tiles/Tiles-5.png" id="11_4wljo"]
 [ext_resource type="Texture2D" uid="uid://ccpybgq5eo343" path="res://resources/pointlight.png" id="12_lkyh4"]
 [ext_resource type="Texture2D" uid="uid://dmlysv73ncmg4" path="res://resources/Fire+Sparks-Sheet.png" id="13_2rgnw"]
-[ext_resource type="Script" path="res://scenes/torch.gd" id="13_ktcsv"]
+[ext_resource type="Script" uid="uid://cvcslen5o4281" path="res://scripts/torch.gd" id="13_ktcsv"]
 [ext_resource type="Texture2D" uid="uid://dj4bge2mvxxvn" path="res://resources/Torch-1.png" id="15_fqt7s"]
 [ext_resource type="Texture2D" uid="uid://o1gdmp340f5t" path="res://assets/objects/Assets-3.png" id="16_tgqds"]
 [ext_resource type="Texture2D" uid="uid://c7wgrfvguxe1h" path="res://assets/objects/Assets-4.png" id="17_x46hq"]
@@ -33,6 +33,8 @@
 [ext_resource type="Texture2D" uid="uid://bkdpj2hrcb6jo" path="res://assets/objects/Assets-2.png" id="30_bmnof"]
 [ext_resource type="Texture2D" uid="uid://dwps4pqlvl5yp" path="res://assets/objects/Assets-6.png" id="31_0jxx8"]
 [ext_resource type="Texture2D" uid="uid://7b1skg5my5h3" path="res://assets/objects/Assets-8.png" id="32_mpcua"]
+[ext_resource type="PackedScene" uid="uid://bawha83a8d3c8" path="res://scenes/HealthBar.tscn" id="34_js0lu"]
+[ext_resource type="PackedScene" uid="uid://canvcjcoa7s61" path="res://scenes/hud.tscn" id="35_gxtfn"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_sstv7"]
 texture = ExtResource("1_3qmot")
@@ -364,6 +366,7 @@ animations = [{
 }]
 
 [node name="Game" type="Node2D"]
+position = Vector2(256, 151.59)
 
 [node name="Tiles One-Way" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_m6x6x")
@@ -384,77 +387,85 @@ z_index = 1
 position = Vector2(-96, 0)
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
-position = Vector2(0, -61)
+position = Vector2(0, -61.5902)
 process_callback = 0
-position_smoothing_enabled = true
+position_smoothing_speed = 10.0
+drag_top_margin = 0.5
 
 [node name="Labels" type="Node" parent="."]
 
 [node name="Label" type="Label" parent="Labels"]
 z_index = -1
-offset_left = 43.0
-offset_top = -106.0
-offset_right = 301.0
-offset_bottom = -90.0
+offset_left = 299.0
+offset_top = 45.5902
+offset_right = 557.0
+offset_bottom = 61.5902
 theme_override_fonts/font = ExtResource("4_6um7f")
 theme_override_font_sizes/font_size = 16
 text = "Press SPACE to JUMP "
+metadata/_edit_use_anchors_ = true
 
 [node name="Label2" type="Label" parent="Labels"]
-offset_left = 1139.0
-offset_top = -106.0
-offset_right = 1397.0
-offset_bottom = -90.0
+offset_left = 1395.0
+offset_top = 45.5902
+offset_right = 1653.0
+offset_bottom = 61.5902
 theme_override_fonts/font = ExtResource("4_6um7f")
 theme_override_font_sizes/font_size = 16
 text = "Wall Jumping Time"
 horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="Label3" type="Label" parent="Labels"]
 z_index = -1
-offset_left = 1619.0
-offset_top = -409.0
-offset_right = 1927.0
-offset_bottom = -393.0
+offset_left = 1875.0
+offset_top = -257.41
+offset_right = 2183.0
+offset_bottom = -241.41
 theme_override_fonts/font = ExtResource("4_6um7f")
 theme_override_font_sizes/font_size = 16
 text = "Press CAPS-LOCK to DASH "
+metadata/_edit_use_anchors_ = true
 
 [node name="Label4" type="Label" parent="Labels"]
 z_index = -1
-offset_left = 3173.0
-offset_top = -409.0
-offset_right = 3481.0
-offset_bottom = -393.0
+offset_left = 3429.0
+offset_top = -257.41
+offset_right = 3737.0
+offset_bottom = -241.41
 theme_override_fonts/font = ExtResource("4_6um7f")
 theme_override_font_sizes/font_size = 16
 text = "Big jump coming up..."
+metadata/_edit_use_anchors_ = true
 
 [node name="Label5" type="Label" parent="Labels"]
 z_index = -1
-offset_left = 4155.0
-offset_top = -86.0
-offset_right = 4413.0
-offset_bottom = -70.0
+offset_left = 4411.0
+offset_top = 65.5902
+offset_right = 4669.0
+offset_bottom = 81.5902
 theme_override_fonts/font = ExtResource("4_6um7f")
 theme_override_font_sizes/font_size = 16
 text = "Hold SHIFT to SNEAK"
+metadata/_edit_use_anchors_ = true
 
 [node name="Label6" type="Label" parent="Labels"]
 z_index = -1
-offset_left = 5169.0
-offset_top = -86.0
-offset_right = 5667.0
-offset_bottom = -70.0
+offset_left = 5425.0
+offset_top = 65.5902
+offset_right = 5927.0
+offset_bottom = 81.5902
 theme_override_fonts/font = ExtResource("4_6um7f")
 theme_override_font_sizes/font_size = 16
 text = "Incomplete Map coming up... WAIT WHAT?!"
+metadata/_edit_use_anchors_ = true
 
 [node name="Background" type="Node" parent="."]
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="Background"]
 
 [node name="ParallaxLayer" type="ParallaxLayer" parent="Background/ParallaxBackground"]
+position = Vector2(256, 151.59)
 motion_scale = Vector2(0.2, 1)
 motion_mirroring = Vector2(390, 0)
 
@@ -463,6 +474,7 @@ position = Vector2(195, -81)
 texture = ExtResource("5_3k117")
 
 [node name="ParallaxLayer2" type="ParallaxLayer" parent="Background/ParallaxBackground"]
+position = Vector2(256, 151.59)
 motion_scale = Vector2(0.4, 1)
 motion_mirroring = Vector2(390, 0)
 
@@ -471,6 +483,7 @@ position = Vector2(195, -81)
 texture = ExtResource("6_f38ci")
 
 [node name="ParallaxLayer3" type="ParallaxLayer" parent="Background/ParallaxBackground"]
+position = Vector2(256, 151.59)
 motion_scale = Vector2(0.6, 1)
 motion_mirroring = Vector2(390, 0)
 
@@ -479,6 +492,7 @@ position = Vector2(195, -81)
 texture = ExtResource("7_v7on5")
 
 [node name="ParallaxLayer4" type="ParallaxLayer" parent="Background/ParallaxBackground"]
+position = Vector2(256, 151.59)
 motion_scale = Vector2(0.7, 1)
 motion_mirroring = Vector2(390, 0)
 
@@ -487,6 +501,7 @@ position = Vector2(195, -81)
 texture = ExtResource("8_0ucag")
 
 [node name="ParallaxLayer5" type="ParallaxLayer" parent="Background/ParallaxBackground"]
+position = Vector2(256, 151.59)
 motion_scale = Vector2(0.8, 1)
 motion_mirroring = Vector2(390, 0)
 
@@ -495,6 +510,7 @@ position = Vector2(195, -81)
 texture = ExtResource("9_mpkka")
 
 [node name="ParallaxLayer6" type="ParallaxLayer" parent="Background/ParallaxBackground"]
+position = Vector2(256, 151.59)
 motion_scale = Vector2(0.8, 1)
 motion_mirroring = Vector2(390, 0)
 
@@ -528,6 +544,7 @@ position = Vector2(195, -81)
 texture = ExtResource("3_wnw5w")
 
 [node name="DirectionalLight2D" type="DirectionalLight2D" parent="."]
+visible = false
 position = Vector2(303, -251)
 rotation = 0.630151
 energy = 0.4
@@ -540,126 +557,152 @@ shadow_filter_smooth = 22.5
 [node name="Sunlight" type="Node" parent="."]
 
 [node name="Sprite2D" type="Sprite2D" parent="Sunlight"]
+visible = false
 position = Vector2(-112.437, -234)
 scale = Vector2(0.110577, 0.0863636)
 texture = ExtResource("3_wnw5w")
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="Sunlight/Sprite2D"]
+visible = false
 position = Vector2(1579.25, -34.7369)
 occluder = SubResource("OccluderPolygon2D_3vxxj")
 
 [node name="Sprite2D2" type="Sprite2D" parent="Sunlight"]
+visible = false
 position = Vector2(190.687, -239.75)
 scale = Vector2(0.0169873, 0.0340909)
 texture = ExtResource("3_wnw5w")
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="Sunlight/Sprite2D2"]
+visible = false
 position = Vector2(18.398, -7.33332)
 occluder = SubResource("OccluderPolygon2D_3vxxj")
 
 [node name="Sprite2D3" type="Sprite2D" parent="Sunlight"]
+visible = false
 position = Vector2(273, -233)
 scale = Vector2(0.0387822, 0.0863636)
 texture = ExtResource("3_wnw5w")
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="Sunlight/Sprite2D3"]
+visible = false
 position = Vector2(25.7853, -11.5788)
 occluder = SubResource("OccluderPolygon2D_3vxxj")
 
 [node name="Sprite2D4" type="Sprite2D" parent="Sunlight"]
+visible = false
 position = Vector2(362, -233)
 scale = Vector2(0.175801, 0.0863636)
 texture = ExtResource("3_wnw5w")
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="Sunlight/Sprite2D4"]
+visible = false
 position = Vector2(-79.6353, 34.737)
 occluder = SubResource("OccluderPolygon2D_3vxxj")
 
 [node name="Sprite2D5" type="Sprite2D" parent="Sunlight"]
+visible = false
 position = Vector2(397.359, -240.25)
 scale = Vector2(0.0135416, 0.0113637)
 texture = ExtResource("3_wnw5w")
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="Sunlight/Sprite2D5"]
+visible = false
 position = Vector2(608.642, -11.5788)
 occluder = SubResource("OccluderPolygon2D_3vxxj")
 
 [node name="Sprite2D6" type="Sprite2D" parent="Sunlight"]
+visible = false
 position = Vector2(485, -228)
 scale = Vector2(0.103285, 0.0863636)
 texture = ExtResource("3_wnw5w")
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="Sunlight/Sprite2D6"]
+visible = false
 position = Vector2(96.8192, 23.1581)
 occluder = SubResource("OccluderPolygon2D_3vxxj")
 
 [node name="Sprite2D7" type="Sprite2D" parent="Sunlight"]
+visible = false
 position = Vector2(587, -227)
 scale = Vector2(0.0388221, 0.0863636)
 texture = ExtResource("3_wnw5w")
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="Sunlight/Sprite2D7"]
+visible = false
 position = Vector2(1365.15, -46.3158)
 occluder = SubResource("OccluderPolygon2D_3vxxj")
 
 [node name="Sprite2D8" type="Sprite2D" parent="Sunlight"]
+visible = false
 position = Vector2(618.09, -237.5)
 scale = Vector2(0.00466749, 0.0136364)
 texture = ExtResource("3_wnw5w")
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="Sunlight/Sprite2D8"]
+visible = false
 position = Vector2(608.642, -11.5788)
 occluder = SubResource("OccluderPolygon2D_3vxxj")
 
 [node name="Sprite2D9" type="Sprite2D" parent="Sunlight"]
+visible = false
 position = Vector2(671.09, -237.5)
 scale = Vector2(0.00466749, 0.0136364)
 texture = ExtResource("3_wnw5w")
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="Sunlight/Sprite2D9"]
+visible = false
 position = Vector2(608.642, -11.5788)
 occluder = SubResource("OccluderPolygon2D_3vxxj")
 
 [node name="Sprite2D10" type="Sprite2D" parent="Sunlight"]
+visible = false
 position = Vector2(684, -242.5)
 scale = Vector2(0.0461538, 0.0318184)
 texture = ExtResource("3_wnw5w")
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="Sunlight/Sprite2D10"]
+visible = false
 position = Vector2(608.642, -11.5788)
 occluder = SubResource("OccluderPolygon2D_3vxxj")
 
 [node name="Sprite2D11" type="Sprite2D" parent="Sunlight"]
+visible = false
 position = Vector2(750.5, -236)
 scale = Vector2(0.228205, 0.0909091)
 texture = ExtResource("3_wnw5w")
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="Sunlight/Sprite2D11"]
+visible = false
 position = Vector2(608.642, -11.5788)
 occluder = SubResource("OccluderPolygon2D_3vxxj")
 
 [node name="Sprite2D12" type="Sprite2D" parent="Sunlight"]
+visible = false
 position = Vector2(1009, -227)
 scale = Vector2(0.0388221, 0.0863636)
 texture = ExtResource("3_wnw5w")
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="Sunlight/Sprite2D12"]
+visible = false
 position = Vector2(1365.15, -46.3158)
 occluder = SubResource("OccluderPolygon2D_3vxxj")
 
 [node name="Sprite2D13" type="Sprite2D" parent="Sunlight"]
+visible = false
 position = Vector2(1158, -242.5)
 scale = Vector2(0.0461538, 0.0318184)
 texture = ExtResource("3_wnw5w")
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="Sunlight/Sprite2D13"]
+visible = false
 position = Vector2(608.642, -11.5788)
 occluder = SubResource("OccluderPolygon2D_3vxxj")
 
 [node name="Torches" type="Node" parent="."]
 
 [node name="Torch" type="PointLight2D" parent="Torches"]
-position = Vector2(1441, -128)
+position = Vector2(1697, 23.5902)
 scale = Vector2(0.889656, 0.889656)
 color = Color(1, 0.6535, 0.23, 1)
 texture = ExtResource("12_lkyh4")
@@ -679,7 +722,7 @@ scale = Vector2(3.41627, 1.95424)
 texture = ExtResource("15_fqt7s")
 
 [node name="Torch2" type="PointLight2D" parent="Torches"]
-position = Vector2(1441, -390)
+position = Vector2(1697, -238.41)
 scale = Vector2(0.889656, 0.889656)
 color = Color(1, 0.6535, 0.23, 1)
 texture = ExtResource("12_lkyh4")
@@ -699,7 +742,7 @@ scale = Vector2(3.41627, 1.95424)
 texture = ExtResource("15_fqt7s")
 
 [node name="Torch3" type="PointLight2D" parent="Torches"]
-position = Vector2(1750, -390)
+position = Vector2(2006, -238.41)
 scale = Vector2(0.889656, 0.889656)
 color = Color(1, 0.6535, 0.23, 1)
 texture = ExtResource("12_lkyh4")
@@ -719,7 +762,7 @@ scale = Vector2(3.41627, 1.95424)
 texture = ExtResource("15_fqt7s")
 
 [node name="Torch4" type="PointLight2D" parent="Torches"]
-position = Vector2(2068, -390)
+position = Vector2(2324, -238.41)
 scale = Vector2(0.889656, 0.889656)
 color = Color(1, 0.6535, 0.23, 1)
 texture = ExtResource("12_lkyh4")
@@ -739,7 +782,7 @@ scale = Vector2(3.41627, 1.95424)
 texture = ExtResource("15_fqt7s")
 
 [node name="Torch5" type="PointLight2D" parent="Torches"]
-position = Vector2(2501, -390)
+position = Vector2(2757, -238.41)
 scale = Vector2(0.889656, 0.889656)
 color = Color(1, 0.6535, 0.23, 1)
 texture = ExtResource("12_lkyh4")
@@ -759,7 +802,7 @@ scale = Vector2(3.41627, 1.95424)
 texture = ExtResource("15_fqt7s")
 
 [node name="Torch6" type="PointLight2D" parent="Torches"]
-position = Vector2(2957, -390)
+position = Vector2(3213, -238.41)
 scale = Vector2(0.889656, 0.889656)
 color = Color(1, 0.6535, 0.23, 1)
 texture = ExtResource("12_lkyh4")
@@ -779,7 +822,7 @@ scale = Vector2(3.41627, 1.95424)
 texture = ExtResource("15_fqt7s")
 
 [node name="Torch7" type="PointLight2D" parent="Torches"]
-position = Vector2(3652, -390)
+position = Vector2(3908, -238.41)
 scale = Vector2(0.889656, 0.889656)
 color = Color(1, 0.6535, 0.23, 1)
 texture = ExtResource("12_lkyh4")
@@ -799,7 +842,7 @@ scale = Vector2(3.41627, 1.95424)
 texture = ExtResource("15_fqt7s")
 
 [node name="Torch8" type="PointLight2D" parent="Torches"]
-position = Vector2(4089, -76)
+position = Vector2(4345, 75.5902)
 scale = Vector2(0.889656, 0.889656)
 color = Color(1, 0.6535, 0.23, 1)
 texture = ExtResource("12_lkyh4")
@@ -819,7 +862,7 @@ scale = Vector2(3.41627, 1.95424)
 texture = ExtResource("15_fqt7s")
 
 [node name="Torch9" type="PointLight2D" parent="Torches"]
-position = Vector2(4457, -76)
+position = Vector2(4713, 75.5902)
 scale = Vector2(0.889656, 0.889656)
 color = Color(1, 0.6535, 0.23, 1)
 texture = ExtResource("12_lkyh4")
@@ -839,7 +882,7 @@ scale = Vector2(3.41627, 1.95424)
 texture = ExtResource("15_fqt7s")
 
 [node name="Torch10" type="PointLight2D" parent="Torches"]
-position = Vector2(5008, -76)
+position = Vector2(5264, 75.5902)
 scale = Vector2(0.889656, 0.889656)
 color = Color(1, 0.6535, 0.23, 1)
 texture = ExtResource("12_lkyh4")
@@ -864,156 +907,172 @@ texture = ExtResource("15_fqt7s")
 
 [node name="Rock" type="Sprite2D" parent="Prop Assets/Rocks"]
 z_index = -2
-position = Vector2(4141, -2)
+position = Vector2(4397, 149.59)
 texture = ExtResource("16_tgqds")
 
 [node name="Rock2" type="Sprite2D" parent="Prop Assets/Rocks"]
 z_index = -2
-position = Vector2(-16, 13)
+position = Vector2(240, 164.59)
 texture = ExtResource("17_x46hq")
 
 [node name="Rock3" type="Sprite2D" parent="Prop Assets/Rocks"]
 z_index = -2
-position = Vector2(116, 8)
+position = Vector2(372, 159.59)
 texture = ExtResource("27_uuxey")
 
 [node name="Rock4" type="Sprite2D" parent="Prop Assets/Rocks"]
 z_index = -2
-position = Vector2(1004, 8)
+position = Vector2(1260, 159.59)
 texture = ExtResource("27_uuxey")
 
 [node name="Rock5" type="Sprite2D" parent="Prop Assets/Rocks"]
 z_index = -2
-position = Vector2(1579, -304)
+position = Vector2(1835, -152.41)
 texture = ExtResource("27_uuxey")
 
 [node name="Rock6" type="Sprite2D" parent="Prop Assets/Rocks"]
 z_index = -2
-position = Vector2(2335.17, -475.978)
+position = Vector2(2591.17, -324.388)
 rotation = -3.14159
 scale = Vector2(0.816216, 1.67934)
 texture = ExtResource("16_tgqds")
 
 [node name="Rock7" type="Sprite2D" parent="Prop Assets/Rocks"]
 z_index = -2
-position = Vector2(2269.75, -493.696)
+position = Vector2(2525.75, -342.106)
 rotation = -3.14159
 scale = Vector2(0.621831, 1.08229)
 texture = ExtResource("17_x46hq")
 
 [node name="Rock8" type="Sprite2D" parent="Prop Assets/Rocks"]
 z_index = -2
-position = Vector2(3572, -299)
+position = Vector2(3828, -147.41)
 texture = ExtResource("17_x46hq")
 
 [node name="Rock9" type="Sprite2D" parent="Prop Assets/Rocks"]
 z_index = -2
-position = Vector2(-154, -2)
+position = Vector2(102, 149.59)
 texture = ExtResource("16_tgqds")
 
 [node name="Sign" type="Sprite2D" parent="Prop Assets"]
 z_index = -2
-position = Vector2(7, -28)
+position = Vector2(263, 123.59)
 texture = ExtResource("28_j4wh6")
 
 [node name="Grass" type="Node" parent="Prop Assets"]
 
 [node name="Grass" type="Sprite2D" parent="Prop Assets/Grass"]
 z_index = -2
-position = Vector2(-33, 21)
+position = Vector2(223, 172.59)
 texture = ExtResource("29_6laqk")
 
 [node name="Grass2" type="Sprite2D" parent="Prop Assets/Grass"]
 z_index = -2
-position = Vector2(61, -3)
+position = Vector2(317, 148.59)
 texture = ExtResource("30_bmnof")
 
 [node name="Grass3" type="Sprite2D" parent="Prop Assets/Grass"]
 z_index = -2
-position = Vector2(215, 21)
+position = Vector2(471, 172.59)
 texture = ExtResource("30_bmnof")
 
 [node name="Grass4" type="Sprite2D" parent="Prop Assets/Grass"]
 z_index = -2
-position = Vector2(154, -27)
+position = Vector2(410, 124.59)
 texture = ExtResource("29_6laqk")
 
 [node name="Grass5" type="Sprite2D" parent="Prop Assets/Grass"]
 z_index = -2
-position = Vector2(372, 21)
+position = Vector2(628, 172.59)
 texture = ExtResource("29_6laqk")
 
 [node name="Grass6" type="Sprite2D" parent="Prop Assets/Grass"]
 z_index = -2
-position = Vector2(586, 21)
+position = Vector2(842, 172.59)
 texture = ExtResource("30_bmnof")
 
 [node name="Grass7" type="Sprite2D" parent="Prop Assets/Grass"]
 z_index = -2
-position = Vector2(1098, 21)
+position = Vector2(1354, 172.59)
 texture = ExtResource("30_bmnof")
 
 [node name="Grass8" type="Sprite2D" parent="Prop Assets/Grass"]
 z_index = -2
-position = Vector2(1679, -291)
+position = Vector2(1935, -139.41)
 texture = ExtResource("29_6laqk")
 
 [node name="Grass9" type="Sprite2D" parent="Prop Assets/Grass"]
 z_index = -2
-position = Vector2(1904, -291)
+position = Vector2(2160, -139.41)
 texture = ExtResource("30_bmnof")
 
 [node name="Grass10" type="Sprite2D" parent="Prop Assets/Grass"]
 z_index = -2
-position = Vector2(2790, -291)
+position = Vector2(3046, -139.41)
 texture = ExtResource("30_bmnof")
 
 [node name="Grass11" type="Sprite2D" parent="Prop Assets/Grass"]
 z_index = -2
-position = Vector2(3202, -291)
+position = Vector2(3458, -139.41)
 texture = ExtResource("30_bmnof")
 
 [node name="Grass12" type="Sprite2D" parent="Prop Assets/Grass"]
 z_index = -2
-position = Vector2(3700, -291)
+position = Vector2(3956, -139.41)
 texture = ExtResource("30_bmnof")
 
 [node name="Grass13" type="Sprite2D" parent="Prop Assets/Grass"]
 z_index = -2
-position = Vector2(3179, -291)
+position = Vector2(3435, -139.41)
 texture = ExtResource("29_6laqk")
 
 [node name="Grass14" type="Sprite2D" parent="Prop Assets/Grass"]
 z_index = -2
-position = Vector2(4240, 21)
+position = Vector2(4496, 172.59)
 texture = ExtResource("29_6laqk")
 
 [node name="Grass15" type="Sprite2D" parent="Prop Assets/Grass"]
 z_index = -2
-position = Vector2(5064, 21)
+position = Vector2(5320, 172.59)
 texture = ExtResource("29_6laqk")
 
 [node name="DeadBush" type="Sprite2D" parent="Prop Assets"]
 z_index = -2
-position = Vector2(948, -7)
+position = Vector2(1204, 144.59)
 texture = ExtResource("31_0jxx8")
 
 [node name="DeadBush2" type="Sprite2D" parent="Prop Assets"]
 z_index = -2
-position = Vector2(2234, -319)
+position = Vector2(2490, -167.41)
 texture = ExtResource("31_0jxx8")
 
 [node name="Fence" type="Sprite2D" parent="Prop Assets"]
 z_index = -2
-position = Vector2(1053, -8)
+position = Vector2(1309, 143.59)
 texture = ExtResource("32_mpcua")
 
 [node name="Fence2" type="Sprite2D" parent="Prop Assets"]
 z_index = -2
-position = Vector2(1115, -8)
+position = Vector2(1371, 143.59)
 texture = ExtResource("32_mpcua")
 
 [node name="Fence3" type="Sprite2D" parent="Prop Assets"]
 z_index = -2
-position = Vector2(3625, -320)
+position = Vector2(3881, -168.41)
 texture = ExtResource("32_mpcua")
+
+[node name="HealthBar" parent="." instance=ExtResource("34_js0lu")]
+visible = false
+offset_left = -237.0
+offset_top = -143.0
+offset_right = -170.0
+offset_bottom = -138.0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" parent="CanvasLayer" instance=ExtResource("35_gxtfn")]
+offset_left = 1.0
+offset_top = 0.59021
+offset_right = 1.0
+offset_bottom = 0.59021
+metadata/_edit_use_anchors_ = true
