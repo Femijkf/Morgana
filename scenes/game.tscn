@@ -1,4 +1,4 @@
-[gd_scene load_steps=74 format=3 uid="uid://cragumjc34c07"]
+[gd_scene load_steps=76 format=3 uid="uid://cragumjc34c07"]
 
 [ext_resource type="Texture2D" uid="uid://doim43nm12rtr" path="res://assets/tiles/Tiles-11.png" id="1_3qmot"]
 [ext_resource type="PackedScene" uid="uid://c7rxwvk1vaqma" path="res://scenes/player.tscn" id="1_ofxhw"]
@@ -35,6 +35,7 @@
 [ext_resource type="Texture2D" uid="uid://7b1skg5my5h3" path="res://assets/objects/Assets-8.png" id="32_mpcua"]
 [ext_resource type="PackedScene" uid="uid://bawha83a8d3c8" path="res://scenes/HealthBar.tscn" id="34_js0lu"]
 [ext_resource type="PackedScene" uid="uid://canvcjcoa7s61" path="res://scenes/hud.tscn" id="35_gxtfn"]
+[ext_resource type="PackedScene" uid="uid://csx8nwspdmej6" path="res://scenes/killzone.tscn" id="36_twgab"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_sstv7"]
 texture = ExtResource("1_3qmot")
@@ -365,6 +366,8 @@ animations = [{
 "speed": 12.0
 }]
 
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_02fa5"]
+
 [node name="Game" type="Node2D"]
 position = Vector2(256, 151.59)
 
@@ -389,6 +392,9 @@ position = Vector2(-96, 0)
 [node name="Camera2D" type="Camera2D" parent="Player"]
 position = Vector2(0, -61.5902)
 process_callback = 0
+limit_left = -55
+limit_bottom = 210
+limit_smoothed = true
 position_smoothing_speed = 10.0
 drag_top_margin = 0.5
 
@@ -470,7 +476,8 @@ motion_scale = Vector2(0.2, 1)
 motion_mirroring = Vector2(390, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="Background/ParallaxBackground/ParallaxLayer"]
-position = Vector2(195, -81)
+position = Vector2(114, -117.96)
+scale = Vector2(1, 1.333)
 texture = ExtResource("5_3k117")
 
 [node name="ParallaxLayer2" type="ParallaxLayer" parent="Background/ParallaxBackground"]
@@ -479,7 +486,8 @@ motion_scale = Vector2(0.4, 1)
 motion_mirroring = Vector2(390, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="Background/ParallaxBackground/ParallaxLayer2"]
-position = Vector2(195, -81)
+position = Vector2(114, -117.96)
+scale = Vector2(1, 1.333)
 texture = ExtResource("6_f38ci")
 
 [node name="ParallaxLayer3" type="ParallaxLayer" parent="Background/ParallaxBackground"]
@@ -488,7 +496,8 @@ motion_scale = Vector2(0.6, 1)
 motion_mirroring = Vector2(390, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="Background/ParallaxBackground/ParallaxLayer3"]
-position = Vector2(195, -81)
+position = Vector2(114, -117.96)
+scale = Vector2(1, 1.333)
 texture = ExtResource("7_v7on5")
 
 [node name="ParallaxLayer4" type="ParallaxLayer" parent="Background/ParallaxBackground"]
@@ -497,7 +506,8 @@ motion_scale = Vector2(0.7, 1)
 motion_mirroring = Vector2(390, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="Background/ParallaxBackground/ParallaxLayer4"]
-position = Vector2(195, -81)
+position = Vector2(114, -117.96)
+scale = Vector2(1, 1.333)
 texture = ExtResource("8_0ucag")
 
 [node name="ParallaxLayer5" type="ParallaxLayer" parent="Background/ParallaxBackground"]
@@ -506,7 +516,8 @@ motion_scale = Vector2(0.8, 1)
 motion_mirroring = Vector2(390, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="Background/ParallaxBackground/ParallaxLayer5"]
-position = Vector2(195, -81)
+position = Vector2(114, -117.96)
+scale = Vector2(1, 1.333)
 texture = ExtResource("9_mpkka")
 
 [node name="ParallaxLayer6" type="ParallaxLayer" parent="Background/ParallaxBackground"]
@@ -515,7 +526,8 @@ motion_scale = Vector2(0.8, 1)
 motion_mirroring = Vector2(390, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="Background/ParallaxBackground/ParallaxLayer6"]
-position = Vector2(195, -81)
+position = Vector2(114, -117.96)
+scale = Vector2(1, 1.333)
 texture = ExtResource("10_mq8sh")
 
 [node name="ParallaxBackground2" type="ParallaxBackground" parent="Background"]
@@ -1076,3 +1088,9 @@ offset_top = 0.59021
 offset_right = 1.0
 offset_bottom = 0.59021
 metadata/_edit_use_anchors_ = true
+
+[node name="Killzone" parent="." instance=ExtResource("36_twgab")]
+position = Vector2(-101, 42.41)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Killzone"]
+shape = SubResource("WorldBoundaryShape2D_02fa5")
