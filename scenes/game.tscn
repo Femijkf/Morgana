@@ -1,4 +1,4 @@
-[gd_scene load_steps=76 format=3 uid="uid://cragumjc34c07"]
+[gd_scene load_steps=77 format=3 uid="uid://cragumjc34c07"]
 
 [ext_resource type="Texture2D" uid="uid://doim43nm12rtr" path="res://assets/tiles/Tiles-11.png" id="1_3qmot"]
 [ext_resource type="PackedScene" uid="uid://c7rxwvk1vaqma" path="res://scenes/player.tscn" id="1_ofxhw"]
@@ -36,6 +36,7 @@
 [ext_resource type="PackedScene" uid="uid://bawha83a8d3c8" path="res://scenes/HealthBar.tscn" id="34_js0lu"]
 [ext_resource type="PackedScene" uid="uid://canvcjcoa7s61" path="res://scenes/hud.tscn" id="35_gxtfn"]
 [ext_resource type="PackedScene" uid="uid://csx8nwspdmej6" path="res://scenes/killzone.tscn" id="36_twgab"]
+[ext_resource type="PackedScene" uid="uid://neq7epwsmqgd" path="res://scenes/wolf.tscn" id="37_02fa5"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_sstv7"]
 texture = ExtResource("1_3qmot")
@@ -1094,3 +1095,6 @@ position = Vector2(-101, 42.41)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Killzone"]
 shape = SubResource("WorldBoundaryShape2D_02fa5")
+
+[node name="wolf" parent="." instance=ExtResource("37_02fa5")]
+position = Vector2(-20, 0.410004)

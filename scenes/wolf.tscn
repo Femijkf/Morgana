@@ -1,0 +1,121 @@
+[gd_scene load_steps=16 format=3 uid="uid://neq7epwsmqgd"]
+
+[ext_resource type="Script" uid="uid://wl8j108gkw8x" path="res://enemy.gd" id="1_jrowp"]
+[ext_resource type="Texture2D" uid="uid://c5ttdyl3j7sm2" path="res://assets/spritesheets/brownwolf-sheet.png" id="2_3a5b2"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aexq3"]
+atlas = ExtResource("2_3a5b2")
+region = Rect2(0, 0, 65, 65)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l0rve"]
+atlas = ExtResource("2_3a5b2")
+region = Rect2(0, 65, 65, 65)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mf2yl"]
+atlas = ExtResource("2_3a5b2")
+region = Rect2(65, 0, 65, 65)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_702ps"]
+atlas = ExtResource("2_3a5b2")
+region = Rect2(65, 65, 65, 65)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u83lg"]
+atlas = ExtResource("2_3a5b2")
+region = Rect2(0, 130, 65, 65)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_frkpr"]
+atlas = ExtResource("2_3a5b2")
+region = Rect2(65, 130, 65, 65)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yg3wg"]
+atlas = ExtResource("2_3a5b2")
+region = Rect2(130, 0, 65, 65)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fgi5x"]
+atlas = ExtResource("2_3a5b2")
+region = Rect2(130, 65, 65, 65)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_35o0l"]
+atlas = ExtResource("2_3a5b2")
+region = Rect2(130, 130, 65, 65)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_c555k"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aexq3")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l0rve")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mf2yl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_702ps")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u83lg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_frkpr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yg3wg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fgi5x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_35o0l")
+}],
+"loop": true,
+"name": &"run",
+"speed": 17.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_meb7u"]
+radius = 63.0714
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5x8ag"]
+size = Vector2(47, 24)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_jrowp"]
+radius = 36.4966
+
+[node name="wolf" type="CharacterBody2D"]
+collision_layer = 2
+script = ExtResource("1_jrowp")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -24.5)
+sprite_frames = SubResource("SpriteFrames_c555k")
+animation = &"run"
+
+[node name="detectionArea" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="detectionArea"]
+position = Vector2(0, -14)
+shape = SubResource("CircleShape2D_meb7u")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-2.5, -12)
+shape = SubResource("RectangleShape2D_5x8ag")
+
+[node name="attackArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="attackArea"]
+position = Vector2(0, -14)
+shape = SubResource("CircleShape2D_jrowp")
+debug_color = Color(0.907292, 0.254835, 0.419231, 0.42)
+
+[connection signal="body_entered" from="detectionArea" to="." method="_on_detection_area_body_entered"]
+[connection signal="body_exited" from="detectionArea" to="." method="_on_detection_area_body_exited"]
+[connection signal="body_entered" from="attackArea" to="." method="_on_attack_area_body_entered"]

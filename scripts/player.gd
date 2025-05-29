@@ -35,7 +35,6 @@ var standingCollisionShape = preload("res://resources/morgana_collision_shape.tr
 var crouchingCollisionShape = preload("res://resources/morgana_crouch_collision_shape.tres")
 var DashGhost = preload("res://scenes/DashGhost.tscn")
 
-
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var sprite_2d: Sprite2D = $Sprite2D 
 @onready var collision_shape = $CollisionShape2D
