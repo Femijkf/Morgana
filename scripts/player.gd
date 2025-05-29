@@ -40,6 +40,7 @@ var DashGhost = preload("res://scenes/DashGhost.tscn")
 @onready var collision_shape = $CollisionShape2D
 @onready var ceilingRayCast1 = $Ceiling1
 @onready var ceilingRayCast2 = $Ceiling2
+@onready var healthBar = get_node("/root/Game/CanvasLayer/Control/HealthUI")
 
 func _physics_process(delta: float) -> void:
 	
@@ -228,5 +229,8 @@ func emptyCeiling() -> bool:
 	var result = not ceilingRayCast1.is_colliding() and not ceilingRayCast2.is_colliding()
 	return result
 
+func takeDamage(amount: int) -> void:
+	healthBar.takeDamage(amount)
+	
 #func _ready():
 	#ensureGhostContainer()

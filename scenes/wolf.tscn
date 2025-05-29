@@ -110,12 +110,19 @@ position = Vector2(-2.5, -12)
 shape = SubResource("RectangleShape2D_5x8ag")
 
 [node name="attackArea" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="attackArea"]
 position = Vector2(0, -14)
 shape = SubResource("CircleShape2D_jrowp")
 debug_color = Color(0.907292, 0.254835, 0.419231, 0.42)
 
+[node name="AttackCooldown" type="Timer" parent="."]
+wait_time = 1.5
+
 [connection signal="body_entered" from="detectionArea" to="." method="_on_detection_area_body_entered"]
 [connection signal="body_exited" from="detectionArea" to="." method="_on_detection_area_body_exited"]
 [connection signal="body_entered" from="attackArea" to="." method="_on_attack_area_body_entered"]
+[connection signal="body_exited" from="attackArea" to="." method="_on_attack_area_body_exited"]
+[connection signal="timeout" from="AttackCooldown" to="." method="_on_attack_cooldown_timeout"]

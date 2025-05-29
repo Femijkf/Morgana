@@ -3,27 +3,47 @@ extends CharacterBody2D
 var speed = 25
 var chasePlayer = false
 var player = null
+var damage = 10
+var can_attack = true
+var inAttackRange = false
+
+@onready var attackCooldownTimer = $AttackCooldown
 
 func _physics_process(delta: float) -> void:
-	if chasePlayer:
-		if position.distance_to(player.position) > 35:#Increase this value to account for crouching
+	if chasePlayer and player:
+		if position.distance_to(player.position) > 35:
 			position.x += (player.position.x - position.x) / speed
 			$AnimatedSprite2D.play("run")
-			if (player.position.x - position.x) < 0:
-				$AnimatedSprite2D.flip_h = true
-			else:
-				$AnimatedSprite2D.flip_h = false
+			$AnimatedSprite2D.flip_h = (player.position.x - position.x) < 0
 		else:
 			$AnimatedSprite2D.play("idle")
 	else:
 		$AnimatedSprite2D.play("idle")
-	move_and_collide(Vector2(0,0))
+	move_and_slide()
 
 func _on_detection_area_body_entered(body: Node2D) -> void:
-	player = body
-	chasePlayer = true
-
+	if body.name == "Player":
+		player = body
+		chasePlayer = true
 
 func _on_detection_area_body_exited(body: Node2D) -> void:
-	player = null
-	chasePlayer = false
+	if body == player:
+		player = null
+		chasePlayer = false
+
+func _on_attack_area_body_entered(body: Node2D) -> void:
+	if body.name == "Player":
+		inAttackRange = true
+		if not attackCooldownTimer.is_stopped():
+			return
+		attackCooldownTimer.start()
+
+func _on_attack_area_body_exited(body: Node2D) -> void:
+	if body.name == "Player":
+		inAttackRange = false
+		attackCooldownTimer.stop()
+
+func _on_attack_cooldown_timeout() -> void:
+	if inAttackRange and player:
+		player.takeDamage(damage)
+		attackCooldownTimer.start()
