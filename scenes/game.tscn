@@ -12,7 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://bho2fijd6852c" path="res://assets/tiles/Tiles-2.png" id="6_6xg2l"]
 [ext_resource type="Texture2D" uid="uid://dd8w8tkcvefp5" path="res://assets/tiles/Tiles-15.png" id="6_7asfi"]
 [ext_resource type="Texture2D" uid="uid://b2r5fjjhqtbph" path="res://assets/background/Background-2.png" id="6_f38ci"]
-[ext_resource type="Texture2D" uid="uid://rovwl7xrhftb" path="res://assets/New Tilesheet.png" id="7_2h7l3"]
+[ext_resource type="Texture2D" uid="uid://rovwl7xrhftb" path="res://assets/spritesheets/New Tilesheet.png" id="7_2h7l3"]
 [ext_resource type="Texture2D" uid="uid://bqpgb0t5bwgjo" path="res://assets/tiles/Tiles-16.png" id="7_ti4lq"]
 [ext_resource type="Texture2D" uid="uid://bcket8jtkecpi" path="res://assets/background/Background-3.png" id="7_v7on5"]
 [ext_resource type="Texture2D" uid="uid://cbnlg6vef2vyr" path="res://assets/background/Background-4.png" id="8_0ucag"]

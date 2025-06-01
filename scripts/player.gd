@@ -30,6 +30,12 @@ const crouchSpeed = 65
 var crouchActive = false
 var underObject = false
 
+# Knockback
+var knockback: Vector2 = Vector2.ZERO
+var knockbackTimer: float = 0.0
+var activeKnockback: Vector2 = Vector2.ZERO
+var knockbackActive: bool = false
+
 # Collision Shapes
 var standingCollisionShape = preload("res://resources/morgana_collision_shape.tres")
 var crouchingCollisionShape = preload("res://resources/morgana_crouch_collision_shape.tres")
@@ -43,13 +49,23 @@ var DashGhost = preload("res://scenes/DashGhost.tscn")
 @onready var healthBar = get_node("/root/Game/CanvasLayer/Control/HealthUI")
 
 func _physics_process(delta: float) -> void:
-	
 	# Add the gravity.
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 
 	# Get the input direction -1, 0, 1
 	var direction := Input.get_axis("move_left", "move_right")
+
+	# Knockback Logic
+	if knockbackTimer > 0.0:
+		knockbackActive = true
+		activeKnockback = knockback
+		knockbackTimer -= delta
+		if animation_player.current_animation != "crouch_idle":
+			animation_player.play("crouch_idle")
+	else:
+		knockbackActive = false
+		activeKnockback = Vector2.ZERO
 
 	# Handle wall jumping mechanics 9timing)
 	if wallJumpActive:
@@ -77,10 +93,12 @@ func _physics_process(delta: float) -> void:
 
 	# Overall Movement Control
 	if not wallJumpActive and not dashActive:
-		if crouchActive:
-			velocity.x = direction * crouchSpeed
-		else: 
-			velocity.x = direction * SPEED
+		var base_speed = crouchSpeed if crouchActive else SPEED
+		velocity.x = direction * base_speed + activeKnockback.x
+		if knockbackActive:
+			velocity.y = activeKnockback.y
+
+
 	elif wallJumpActive:
 		velocity.x = move_toward(velocity.x, wallJumpDirection * wallBounce, SPEED * delta)
 	
@@ -97,14 +115,14 @@ func _physics_process(delta: float) -> void:
 		elif animation_player.current_animation != "land":
 			if (direction == 0 and dashActive) or (direction != 0 and dashActive):
 				animation_player.play("dash")
-			elif direction == 0 and not crouchActive:
+			elif direction == 0 and not crouchActive and not knockbackActive:
 				animation_player.play("idle")
 			elif crouchActive:
 				if direction == 0:
 					animation_player.play("crouch_idle")
 				else:
 					animation_player.play("crouch_walk")
-			else:
+			elif not knockbackActive:
 				animation_player.play("run")
 	elif dashActive:
 		animation_player.play("dash")
@@ -202,6 +220,10 @@ func dash():
 		dashTimer = dashDuration
 
 func spawnDashGhost():
+	# Player Dash Flicker Logic
+	var tween = create_tween()
+	tween.tween_property($Sprite2D, "material:shader_parameter/amount", 1.0, 0.0)
+	tween.tween_property($Sprite2D, "material:shader_parameter/amount", 0.0, 0.3)
 	
 	var ghost = DashGhost.instantiate()
 	var region_rect = Rect2(0, 455, 65, 65)  # Adjust these values for the dash frame
@@ -231,6 +253,18 @@ func emptyCeiling() -> bool:
 
 func takeDamage(amount: int) -> void:
 	healthBar.takeDamage(amount)
+	var tween = create_tween()
+	# Take Damage Flicker Logic
+	tween.tween_property($Sprite2D, "material:shader_parameter/amount", 0.8, 0.0)
+	tween.tween_property($Sprite2D, "material:shader_parameter/amount", 0.0, 0.1).set_delay(0.2)
 	
+func applyKnockback(direction: Vector2, force: float, knockbackDuration: float) -> void:
+	if dashActive: return  # optional dash immunity
+	var knockDirection = direction.normalized()
+	knockDirection.y = -0.8  # Negative = upward force
+	knockback = knockDirection.normalized() * force
+
+	knockbackTimer = knockbackDuration
+
 #func _ready():
 	#ensureGhostContainer()

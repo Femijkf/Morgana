@@ -1,9 +1,10 @@
-[gd_scene load_steps=48 format=3 uid="uid://c7rxwvk1vaqma"]
+[gd_scene load_steps=50 format=3 uid="uid://c7rxwvk1vaqma"]
 
 [ext_resource type="Texture2D" uid="uid://b0ps7f2go0vo0" path="res://assets/spritesheets/Kyra Sprite Sheet.png" id="1_e7yx1"]
 [ext_resource type="Script" uid="uid://bf6vb5u1ne0l0" path="res://scripts/player.gd" id="1_gmuu8"]
 [ext_resource type="Texture2D" uid="uid://cdjxfh71fuv86" path="res://assets/spritesheets/wall-jump-sheet.png" id="3_gxyrw"]
 [ext_resource type="Texture2D" uid="uid://ccneadlhqfoy5" path="res://assets/spritesheets/Morgana Movement Spritesheet.png" id="4_gslpk"]
+[ext_resource type="Shader" uid="uid://5qi3rtvgd0e4" path="res://scenes/flicker.gdshader" id="4_tuyoq"]
 [ext_resource type="Shape2D" uid="uid://cdyksvyl0lbwi" path="res://resources/morgana_collision_shape.tres" id="5_a8ip8"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_w2fd7"]
@@ -217,6 +218,11 @@ animations = [{
 "name": &"wallslide",
 "speed": 5.0
 }]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fjrip"]
+shader = ExtResource("4_tuyoq")
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/amount = 0.0
 
 [sub_resource type="Animation" id="Animation_vw8xb"]
 length = 0.001
@@ -472,6 +478,7 @@ animation = &"wallslide"
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = 1
+material = SubResource("ShaderMaterial_fjrip")
 position = Vector2(0, -24.5)
 texture = ExtResource("4_gslpk")
 hframes = 19

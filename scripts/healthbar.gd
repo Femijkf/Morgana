@@ -32,4 +32,5 @@ func heal(amount: int) -> void:
 	updateHealthBar()
 
 func die():
+	await get_tree().create_timer(0.31).timeout
 	get_tree().reload_current_scene()

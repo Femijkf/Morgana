@@ -1,6 +1,6 @@
 [gd_scene load_steps=16 format=3 uid="uid://neq7epwsmqgd"]
 
-[ext_resource type="Script" uid="uid://wl8j108gkw8x" path="res://enemy.gd" id="1_jrowp"]
+[ext_resource type="Script" uid="uid://wl8j108gkw8x" path="res://scripts/enemy.gd" id="1_jrowp"]
 [ext_resource type="Texture2D" uid="uid://c5ttdyl3j7sm2" path="res://assets/spritesheets/brownwolf-sheet.png" id="2_3a5b2"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_aexq3"]

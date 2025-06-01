@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://rovwl7xrhftb"
-path="res://.godot/imported/New Tilesheet.png-943b98a503cfea34f026da7617bddbcc.ctex"
+uid="uid://dcjumyalsiflq"
+path="res://.godot/imported/Kyra_Sprite_Sheet_v1.1.png-1e231f758623c517ce69a3027e75bfe2.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/New Tilesheet.png"
-dest_files=["res://.godot/imported/New Tilesheet.png-943b98a503cfea34f026da7617bddbcc.ctex"]
+source_file="res://assets/spritesheets/Kyra_Sprite_Sheet_v1.1.png"
+dest_files=["res://.godot/imported/Kyra_Sprite_Sheet_v1.1.png-1e231f758623c517ce69a3027e75bfe2.ctex"]
 
 [params]
 
