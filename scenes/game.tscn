@@ -392,6 +392,7 @@ position = Vector2(-96, 0)
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 position = Vector2(0, -61.5902)
+zoom = Vector2(2, 2)
 process_callback = 0
 limit_left = -55
 limit_bottom = 210
@@ -470,6 +471,7 @@ metadata/_edit_use_anchors_ = true
 [node name="Background" type="Node" parent="."]
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="Background"]
+visible = false
 
 [node name="ParallaxLayer" type="ParallaxLayer" parent="Background/ParallaxBackground"]
 position = Vector2(256, 151.59)
@@ -555,6 +557,97 @@ modulate = Color(1, 1, 1, 0.219608)
 z_index = 8
 position = Vector2(195, -81)
 texture = ExtResource("3_wnw5w")
+
+[node name="LevelBackground" type="ParallaxBackground" parent="Background"]
+
+[node name="BackgroundLayer" type="ParallaxLayer" parent="Background/LevelBackground"]
+position = Vector2(0, -113)
+scale = Vector2(1, 1.32)
+motion_scale = Vector2(0.2, 1)
+motion_mirroring = Vector2(780, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="Background/LevelBackground/BackgroundLayer"]
+texture = ExtResource("5_3k117")
+centered = false
+
+[node name="Sprite2D2" type="Sprite2D" parent="Background/LevelBackground/BackgroundLayer"]
+position = Vector2(390, 0)
+texture = ExtResource("5_3k117")
+centered = false
+
+[node name="MidgroundLayer1" type="ParallaxLayer" parent="Background/LevelBackground"]
+position = Vector2(0, -113)
+scale = Vector2(1, 1.32)
+motion_scale = Vector2(0.4, 1)
+motion_mirroring = Vector2(780, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="Background/LevelBackground/MidgroundLayer1"]
+texture = ExtResource("6_f38ci")
+centered = false
+
+[node name="Sprite2D2" type="Sprite2D" parent="Background/LevelBackground/MidgroundLayer1"]
+position = Vector2(390, 0)
+texture = ExtResource("6_f38ci")
+centered = false
+
+[node name="MidgroundLayer2" type="ParallaxLayer" parent="Background/LevelBackground"]
+position = Vector2(0, -113)
+scale = Vector2(1, 1.32)
+motion_scale = Vector2(0.6, 1)
+motion_mirroring = Vector2(780, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="Background/LevelBackground/MidgroundLayer2"]
+texture = ExtResource("7_v7on5")
+centered = false
+
+[node name="Sprite2D2" type="Sprite2D" parent="Background/LevelBackground/MidgroundLayer2"]
+position = Vector2(390, 0)
+texture = ExtResource("7_v7on5")
+centered = false
+
+[node name="MidgroundLayer3" type="ParallaxLayer" parent="Background/LevelBackground"]
+position = Vector2(0, -113)
+scale = Vector2(1, 1.32)
+motion_scale = Vector2(0.8, 1)
+motion_mirroring = Vector2(780, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="Background/LevelBackground/MidgroundLayer3"]
+texture = ExtResource("8_0ucag")
+centered = false
+
+[node name="Sprite2D2" type="Sprite2D" parent="Background/LevelBackground/MidgroundLayer3"]
+position = Vector2(390, 0)
+texture = ExtResource("8_0ucag")
+centered = false
+
+[node name="ForegroundLayer" type="ParallaxLayer" parent="Background/LevelBackground"]
+position = Vector2(0, -113)
+scale = Vector2(1, 1.32)
+motion_scale = Vector2(0.9, 1)
+motion_mirroring = Vector2(780, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="Background/LevelBackground/ForegroundLayer"]
+texture = ExtResource("9_mpkka")
+centered = false
+
+[node name="Sprite2D2" type="Sprite2D" parent="Background/LevelBackground/ForegroundLayer"]
+position = Vector2(390, 0)
+texture = ExtResource("9_mpkka")
+centered = false
+
+[node name="FilterLayer" type="ParallaxLayer" parent="Background/LevelBackground"]
+position = Vector2(0, -113)
+scale = Vector2(1, 1.32)
+motion_mirroring = Vector2(780, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="Background/LevelBackground/FilterLayer"]
+texture = ExtResource("10_mq8sh")
+centered = false
+
+[node name="Sprite2D2" type="Sprite2D" parent="Background/LevelBackground/FilterLayer"]
+position = Vector2(390, 0)
+texture = ExtResource("10_mq8sh")
+centered = false
 
 [node name="DirectionalLight2D" type="DirectionalLight2D" parent="."]
 visible = false

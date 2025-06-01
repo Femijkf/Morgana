@@ -22,11 +22,11 @@ grow_vertical = 2
 [node name="HealthUI" type="Control" parent="."]
 layout_mode = 1
 anchors_preset = 0
-offset_left = 17.0
+offset_left = 29.0
 offset_top = 8.0
-offset_right = 120.0
+offset_right = 132.0
 offset_bottom = 28.0
-scale = Vector2(1.3, 1.3)
+scale = Vector2(2.90396, 2.87818)
 script = ExtResource("1_5ysmq")
 
 [node name="HealthBar" parent="HealthUI" instance=ExtResource("1_oo0fn")]
@@ -58,11 +58,10 @@ vertical_alignment = 1
 [node name="HotBar" type="Control" parent="."]
 layout_mode = 1
 anchors_preset = 0
-offset_left = 10.0
-offset_top = 211.0
-offset_right = 72.0
-offset_bottom = 275.0
-scale = Vector2(1.3, 1.3)
+offset_top = 445.0
+offset_right = 62.0
+offset_bottom = 509.0
+scale = Vector2(2.94, 2.94)
 
 [node name="Sprite2D" type="Sprite2D" parent="HotBar"]
 modulate = Color(1, 1, 1, 0.294118)
