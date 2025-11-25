@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://bf6vb5u1ne0l0" path="res://scripts/player.gd" id="1_gmuu8"]
 [ext_resource type="Texture2D" uid="uid://cdjxfh71fuv86" path="res://assets/spritesheets/wall-jump-sheet.png" id="3_gxyrw"]
 [ext_resource type="Texture2D" uid="uid://ccneadlhqfoy5" path="res://assets/spritesheets/Morgana Movement Spritesheet.png" id="4_gslpk"]
-[ext_resource type="Shader" uid="uid://5qi3rtvgd0e4" path="res://scenes/flicker.gdshader" id="4_tuyoq"]
+[ext_resource type="Shader" uid="uid://5qi3rtvgd0e4" path="res://assets/shaders/flicker.gdshader" id="4_tuyoq"]
 [ext_resource type="Shape2D" uid="uid://cdyksvyl0lbwi" path="res://resources/morgana_collision_shape.tres" id="5_a8ip8"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_w2fd7"]
@@ -467,7 +467,7 @@ _data = {
 }
 
 [node name="Player" type="CharacterBody2D"]
-collision_layer = 2
+collision_layer = 3
 script = ExtResource("1_gmuu8")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]

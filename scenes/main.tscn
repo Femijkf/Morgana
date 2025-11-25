@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://dg5mapi4fpq2x"]
+
+[ext_resource type="PackedScene" uid="uid://b1anrx64qeh6h" path="res://scenes/water_body.tscn" id="1_o5qli"]
+[ext_resource type="PackedScene" uid="uid://c7rxwvk1vaqma" path="res://scenes/player.tscn" id="2_0wfyh"]
+
+[node name="Main" type="Node2D"]
+
+[node name="Water_Body" parent="." instance=ExtResource("1_o5qli")]
+position = Vector2(488, 218)
+
+[node name="Player" parent="." instance=ExtResource("2_0wfyh")]
+position = Vector2(523, 76)
