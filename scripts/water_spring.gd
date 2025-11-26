@@ -81,8 +81,6 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 		# Fallback check for any node with a velocity property (less safe, but flexible)
 		speed = body.velocity.y * motion_factor 
 	else:
-		# Fallback or error logging if the body type is unexpected
-		print("Warning: Water spring collision with unexpected body type.")
 		return
 		
 	# Only splash if the speed is positive (moving downwards into the water)
