@@ -19,7 +19,6 @@ func _ready():
 	
 func updateHealthBar() -> void:
 	healthBar.value = currentHealth
-	healthLabel.text = str(currentHealth)
 	
 func takeDamage(amount: int) -> void:
 	currentHealth = max(0, currentHealth - amount)

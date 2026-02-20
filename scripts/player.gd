@@ -201,9 +201,11 @@ func wallJump():
 		velocity.y = 30
 		sprite_2d.flip_h = false
 		if nextToRightWall():
+			sprite_2d.offset.x = 0
 			sprite_2d.flip_h = false
 			animation_player.play("wallslide")
 		if nextToLeftWall():
+			sprite_2d.offset.x = -1
 			sprite_2d.flip_h = true
 			animation_player.play("wallslide")
 

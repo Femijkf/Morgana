@@ -11,7 +11,7 @@ func initialize(texture: Texture2D, position: Vector2, region_rect: Rect2, flip_
 	self.region_rect = region_rect
 	self.flip_h = flip_h
 	modulate = color  # Apply the color to the ghost
-	self.z_index = 0
+	self.z_index = -1
 
 func _ready():
 	timer.start()  # Start the timer when the ghost is created

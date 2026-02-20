@@ -467,7 +467,6 @@ _data = {
 }
 
 [node name="Player" type="CharacterBody2D"]
-collision_layer = 3
 script = ExtResource("1_gmuu8")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -477,9 +476,8 @@ sprite_frames = SubResource("SpriteFrames_1sfi7")
 animation = &"wallslide"
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-z_index = 1
 material = SubResource("ShaderMaterial_fjrip")
-position = Vector2(0, -24.5)
+position = Vector2(0, -25)
 texture = ExtResource("4_gslpk")
 hframes = 19
 vframes = 8
@@ -508,6 +506,7 @@ position = Vector2(-6, -21)
 target_position = Vector2(0, -25)
 
 [node name="Ceiling2" type="RayCast2D" parent="."]
+visibility_layer = 3
 position = Vector2(6, -21)
 target_position = Vector2(0, -25)
 
