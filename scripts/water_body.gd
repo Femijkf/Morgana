@@ -4,13 +4,13 @@ extends Node2D
 
 #spring factor, dampening factor and spread factor
 #spread factor dictacts how much the waves will spread to their neighbors
-@export var k = 0.015
+@export var k = 0.015 
 @export var d = 0.03
 @export var spread = 0.0002
 
 #the spring array
 var springs = []
-var passes = 8
+var passes = 4
 
 #distance in pixels between each spring
 @export var distance_between_springs = 32
@@ -37,6 +37,8 @@ var target_height = global_position.y
 
 @onready var collision_shape = $Water_Body_Area/CollisionShape2D
 @onready var water_body_area = $Water_Body_Area
+
+var cinematic_enabled : bool = false
 
 #initializes the spring array and all the springs
 func _ready():
@@ -157,6 +159,29 @@ func splash(index, speed):
 		springs[index].velocity += speed
 	pass
 
-
+# --- SECTION A: Logic Update ---
 func _on_water_body_area_body_entered(body: Node2D) -> void:
-	pass # Replace with function body.
+	if body.is_in_group("player") or body.name == "Player":
+		# Calculate where they hit
+		var local_x = body.global_position.x - global_position.x
+		var index = int(local_x / distance_between_springs)
+		index = clamp(index, 0, springs.size() - 1)
+		
+		# 1. Check for Cinematic Splash FIRST
+		if is_in_group("cinematic_pool") and cinematic_enabled:
+			trigger_big_splash(body)
+			cinematic_enabled = false # Disable AFTER triggering
+		
+		# 2. ONLY do normal splash if cinematic IS NOT happening
+		else:
+			var impact_force = body.velocity.y * 0.02
+			# Normal splash is much smaller than cinematic
+			splash(index, clamp(impact_force, 2.0, 12.0))
+
+func trigger_big_splash(body):
+	var local_x = body.global_position.x - global_position.x
+	var index = int(clamp(local_x / distance_between_springs, 0, springs.size() - 1))
+	
+	# Massive force for the big drop
+	splash(index, 35.0) 
+	print("BIG CINEMATIC SPLASH TRIGGERED")

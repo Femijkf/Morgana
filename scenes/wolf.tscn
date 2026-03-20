@@ -95,7 +95,7 @@ script = ExtResource("1_jrowp")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -24.5)
 sprite_frames = SubResource("SpriteFrames_c555k")
-animation = &"run"
+animation = &"idle"
 
 [node name="detectionArea" type="Area2D" parent="."]
 collision_layer = 2

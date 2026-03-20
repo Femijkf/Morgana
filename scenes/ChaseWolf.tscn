@@ -1,0 +1,103 @@
+[gd_scene load_steps=14 format=3 uid="uid://bg05mvla08gb8"]
+
+[ext_resource type="Texture2D" uid="uid://c5ttdyl3j7sm2" path="res://assets/spritesheets/brownwolf-sheet.png" id="1_g31cr"]
+[ext_resource type="Script" uid="uid://2yorob1oj8rw" path="res://scripts/ChaseWolf.gd" id="1_xfy81"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aexq3"]
+atlas = ExtResource("1_g31cr")
+region = Rect2(0, 0, 65, 65)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l0rve"]
+atlas = ExtResource("1_g31cr")
+region = Rect2(0, 65, 65, 65)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mf2yl"]
+atlas = ExtResource("1_g31cr")
+region = Rect2(65, 0, 65, 65)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_702ps"]
+atlas = ExtResource("1_g31cr")
+region = Rect2(65, 65, 65, 65)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u83lg"]
+atlas = ExtResource("1_g31cr")
+region = Rect2(0, 130, 65, 65)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_frkpr"]
+atlas = ExtResource("1_g31cr")
+region = Rect2(65, 130, 65, 65)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yg3wg"]
+atlas = ExtResource("1_g31cr")
+region = Rect2(130, 0, 65, 65)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fgi5x"]
+atlas = ExtResource("1_g31cr")
+region = Rect2(130, 65, 65, 65)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_35o0l"]
+atlas = ExtResource("1_g31cr")
+region = Rect2(130, 130, 65, 65)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_xfy81"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aexq3")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l0rve")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mf2yl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_702ps")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u83lg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_frkpr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yg3wg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fgi5x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_35o0l")
+}],
+"loop": true,
+"name": &"run",
+"speed": 17.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1jgpm"]
+size = Vector2(59.6001, 29.8504)
+
+[node name="ChaseWolf" type="CharacterBody2D"]
+collision_layer = 4
+script = ExtResource("1_xfy81")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(9.53674e-07, -32)
+scale = Vector2(1.26923, 1.26923)
+sprite_frames = SubResource("SpriteFrames_xfy81")
+animation = &"run"
+frame_progress = 0.69876
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-2, -14.9563)
+scale = Vector2(1.00671, 1.00794)
+shape = SubResource("RectangleShape2D_1jgpm")
+
+[node name="FloorCheck" type="RayCast2D" parent="."]
+position = Vector2(0, -11)
+target_position = Vector2(0, 13)

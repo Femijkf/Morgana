@@ -41,6 +41,9 @@ var standingCollisionShape = preload("res://resources/morgana_collision_shape.tr
 var crouchingCollisionShape = preload("res://resources/morgana_crouch_collision_shape.tres")
 var DashGhost = preload("res://scenes/DashGhost.tscn")
 
+#Cutscene
+var cutscene_mode: bool = false
+
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var sprite_2d: Sprite2D = $Sprite2D 
 @onready var collision_shape = $CollisionShape2D
@@ -52,7 +55,14 @@ func _physics_process(delta: float) -> void:
 	# Add the gravity.
 	if not is_on_floor():
 		velocity += get_gravity() * delta
-
+	
+	# If we are in a cutscene, don't allow player movement inputs
+	if cutscene_mode:
+		velocity.x = move_toward(velocity.x, 0, SPEED * delta) # Slow down X naturally
+		move_and_slide()
+		return # STOP HERE
+	
+	
 	# Get the input direction -1, 0, 1
 	var direction := Input.get_axis("move_left", "move_right")
 
@@ -172,6 +182,17 @@ func nextToLeftWall():
 	return $LeftWall.is_colliding()
 
 func wallJump():
+	if Input.is_action_just_pressed("jump") and Engine.time_scale < 1.0:
+		Engine.time_scale = 1.0 # Reset time
+		# POWERFUL LAUNCH: 
+		# Adjust 600 (horizontal) and -500 (vertical) to fit your cliff gap
+		velocity = Vector2(600, -500) 
+		
+		var manager = get_node_or_null("/root/level1/LevelManager")
+		if manager:
+			manager.start_falling_sequence()
+		return
+		
 	# Handle jump. 
 	# is_action_pressed = hold space jump
 	# is_action_just_pressed = press & release space jump

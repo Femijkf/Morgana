@@ -69,20 +69,32 @@ func set_collision_width(value):
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	#called when a body collides with a spring
 	
-	# CRITICAL FIX: In Godot 4, CharacterBody2D uses 'velocity', not 'motion'.
-	# We check if the body is a CharacterBody2D to ensure safe access to the property.
-	var speed = 0
+	# If the body is moving fast, it might have 'tunneled' 
+	# We force a splash based on the impact velocity
+	process_splash(body)
 	
-	if body is CharacterBody2D:
-		# Use the CharacterBody2D's calculated velocity
-		speed = body.velocity.y * motion_factor
-	# If the body is a RigidBody2D, 'linear_velocity' should be used, but CharacterBody2D is assumed here.
-	elif "velocity" in body:
-		# Fallback check for any node with a velocity property (less safe, but flexible)
-		speed = body.velocity.y * motion_factor 
-	else:
-		return
-		
-	# Only splash if the speed is positive (moving downwards into the water)
-	if speed > 0:
-		emit_signal("splash", index, speed)
+func process_splash(body):
+	if "velocity" in body:
+		var speed = body.velocity.y * motion_factor
+		if speed > 0:
+			# If the player is in cutscene mode, ignore the spring's individual trigger
+			# because the WaterBodyArea handles it better for high speeds.
+			if body.get("cutscene_mode") == true:
+				return 
+				
+			speed = clamp(speed, 0, 10.0)
+			emit_signal("splash", index, speed)
+	
+	#if body is CharacterBody2D:
+		## Use the CharacterBody2D's calculated velocity
+		#speed = body.velocity.y * motion_factor
+	## If the body is a RigidBody2D, 'linear_velocity' should be used, but CharacterBody2D is assumed here.
+	#elif "velocity" in body:
+		## Fallback check for any node with a velocity property (less safe, but flexible)
+		#speed = body.velocity.y * motion_factor 
+	#else:
+		#return
+		#
+	## Only splash if the speed is positive (moving downwards into the water)
+	#if speed > 0:
+		#emit_signal("splash", index, speed)
