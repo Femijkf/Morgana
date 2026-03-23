@@ -62,7 +62,6 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 		return # STOP HERE
 	
-	
 	# Get the input direction -1, 0, 1
 	var direction := Input.get_axis("move_left", "move_right")
 
@@ -165,6 +164,7 @@ func _physics_process(delta: float) -> void:
 		if not Input.is_action_pressed("crouch"):
 			stand()
 			underObject = false
+			
 
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	if anim_name == "takeoff":

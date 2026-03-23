@@ -182,6 +182,12 @@ func trigger_big_splash(body):
 	var local_x = body.global_position.x - global_position.x
 	var index = int(clamp(local_x / distance_between_springs, 0, springs.size() - 1))
 	
-	# Massive force for the big drop
 	splash(index, 35.0) 
-	print("BIG CINEMATIC SPLASH TRIGGERED")
+	
+	# TRIGGER THE SHAKE
+	var level_manager = get_node_or_null("/root/level1/LevelManager") # Adjust path if needed
+	if level_manager:
+		# Shake with 15px intensity for 0.4 seconds
+		level_manager.shake_camera(25.0, 0.5)
+		
+	print("BIG CINEMATIC SPLASH & SHAKE yay")
