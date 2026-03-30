@@ -83,7 +83,7 @@ func start_falling_sequence():
 		var cam_tween = create_tween().set_parallel(true)
 		cam_tween.tween_property(cam, "zoom", Vector2(2.4, 2.4), 1.0).set_trans(Tween.TRANS_SINE)
 		cam_tween.tween_property(cam, "offset:x", 60, 1.0).set_trans(Tween.TRANS_SINE)
-		cam_tween.tween_property(cam, "offset:y", -30, 1.0).set_trans(Tween.TRANS_SINE)
+		cam_tween.tween_property(cam, "offset:y", -20, 1.0).set_trans(Tween.TRANS_SINE)
 	
 	# Guided Movement
 	var move_tween = create_tween()

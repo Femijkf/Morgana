@@ -36,6 +36,9 @@ var knockbackTimer: float = 0.0
 var activeKnockback: Vector2 = Vector2.ZERO
 var knockbackActive: bool = false
 
+var isGrabbing = false
+var ledge_grab_cooldown: float = 0.0
+
 # Collision Shapes
 var standingCollisionShape = preload("res://resources/morgana_collision_shape.tres")
 var crouchingCollisionShape = preload("res://resources/morgana_crouch_collision_shape.tres")
@@ -49,9 +52,37 @@ var cutscene_mode: bool = false
 @onready var collision_shape = $CollisionShape2D
 @onready var ceilingRayCast1 = $Ceiling1
 @onready var ceilingRayCast2 = $Ceiling2
+
+@onready var grab_hand_right = $GrabHandRayCastRight
+@onready var grab_hand_left = $GrabHandRayCastLeft
+@onready var grab_check_right =$GrabCheckRayCastRight
+@onready var grab_check_left =$GrabCheckRayCastLeft
+
 @onready var healthBar = get_node("/root/Game/CanvasLayer/Control/HealthUI")
 
 func _physics_process(delta: float) -> void:
+	# Ledge Hang
+	if isGrabbing:
+		velocity = Vector2.ZERO
+		
+		# Jump Up
+		if Input.is_action_just_pressed("jump"):
+			isGrabbing = false
+			sprite_2d.offset.x = 0
+			velocity.y = JUMP_VELOCITY
+			velocity.x = 50 if not sprite_2d.flip_h else -50
+			ledge_grab_cooldown = 0.3 # Brief cooldown after jumping up
+			move_and_slide()
+		
+		# Let Go (Crouch or Down)
+		elif Input.is_action_just_pressed("crouch") or Input.is_action_pressed("ui_down"):
+			isGrabbing = false
+			sprite_2d.offset.x = 0
+			velocity.y = 50 # Give a little downward push
+			ledge_grab_cooldown = 0.4 # Longer cooldown so she falls past the ledge
+			
+		return
+	
 	# Add the gravity.
 	if not is_on_floor():
 		velocity += get_gravity() * delta
@@ -146,6 +177,14 @@ func _physics_process(delta: float) -> void:
 			else:
 				animation_player.play("crouch_idle")
 	
+	# Update ledge grab cooldown
+	if ledge_grab_cooldown > 0:
+		ledge_grab_cooldown -= delta
+
+	# Only check for ledge if cooldown is finished
+	if ledge_grab_cooldown <= 0:
+		_check_ledge_grab()
+	
 	# Apply movement
 	move_and_slide()
 	wallJump()
@@ -196,7 +235,8 @@ func wallJump():
 	# Handle jump. 
 	# is_action_pressed = hold space jump
 	# is_action_just_pressed = press & release space jump
-	if Input.is_action_pressed("jump") and is_on_floor() and emptyCeiling():
+	if Input.is_action_pressed("jump") and (is_on_floor() and emptyCeiling() or isGrabbing):
+		isGrabbing = false
 		velocity.y = JUMP_VELOCITY
 	
 	# Handle wall jump
@@ -288,6 +328,34 @@ func applyKnockback(direction: Vector2, force: float, knockbackDuration: float) 
 	knockback = knockDirection.normalized() * force
 
 	knockbackTimer = knockbackDuration
+
+func _check_ledge_grab():
+	if velocity.y < 0 or is_on_floor() or isGrabbing or dashActive or cutscene_mode or ledge_grab_cooldown > 0:
+		return
+
+	var right_air = not grab_hand_right.is_colliding()
+	var right_wall = grab_check_right.is_colliding()
+	var left_air = not grab_hand_left.is_colliding()
+	var left_wall = grab_check_left.is_colliding()
+
+	if (right_air and right_wall) or (left_air and left_wall):
+		isGrabbing = true
+		velocity = Vector2.ZERO
+		
+		var tile_size = 24
+		
+		# This math snaps her to the top of whatever tile she is touching
+		global_position.y = floor(global_position.y / tile_size) * tile_size + 20
+		# NOTE: If she is still too high/low, change '+ 12' to '+ 14' or '+ 10'
+		
+		if right_wall:
+			sprite_2d.flip_h = false
+			sprite_2d.offset.x = -3 
+		else:
+			sprite_2d.flip_h = true
+			sprite_2d.offset.x = 2 
+			
+		animation_player.play("ledge_idle")
 
 #func _ready():
 	#ensureGhostContainer()

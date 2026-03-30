@@ -1,4 +1,4 @@
-[gd_scene load_steps=50 format=3 uid="uid://c7rxwvk1vaqma"]
+[gd_scene load_steps=51 format=3 uid="uid://c7rxwvk1vaqma"]
 
 [ext_resource type="Texture2D" uid="uid://b0ps7f2go0vo0" path="res://assets/spritesheets/Kyra Sprite Sheet.png" id="1_e7yx1"]
 [ext_resource type="Script" uid="uid://bf6vb5u1ne0l0" path="res://scripts/player.gd" id="1_gmuu8"]
@@ -449,6 +449,21 @@ tracks/0/keys = {
 "values": [76, 77, 78, 79, 80]
 }
 
+[sub_resource type="Animation" id="Animation_tuyoq"]
+resource_name = "ledge_idle"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [171, 172, 173, 174, 175]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_hrffs"]
 _data = {
 &"RESET": SubResource("Animation_vw8xb"),
@@ -459,6 +474,7 @@ _data = {
 &"idle": SubResource("Animation_sdffb"),
 &"jump": SubResource("Animation_klst4"),
 &"land": SubResource("Animation_kt22h"),
+&"ledge_idle": SubResource("Animation_tuyoq"),
 &"peak": SubResource("Animation_anltr"),
 &"run": SubResource("Animation_vssxc"),
 &"takeoff": SubResource("Animation_t4lax"),
@@ -480,6 +496,7 @@ texture_filter = 1
 material = SubResource("ShaderMaterial_fjrip")
 position = Vector2(0, -25)
 texture = ExtResource("5_tuyoq")
+offset = Vector2(-3, 0)
 hframes = 19
 vframes = 10
 
@@ -513,5 +530,21 @@ target_position = Vector2(0, -25)
 
 [node name="SpriteContainer" type="Node2D" parent="."]
 position = Vector2(0, -25)
+
+[node name="GrabHandRayCastRight" type="RayCast2D" parent="."]
+position = Vector2(6, -38)
+target_position = Vector2(2, 0)
+
+[node name="GrabHandRayCastLeft" type="RayCast2D" parent="."]
+position = Vector2(-6, -38)
+target_position = Vector2(-2, 0)
+
+[node name="GrabCheckRayCastRight" type="RayCast2D" parent="."]
+position = Vector2(6, -36)
+target_position = Vector2(2, 0)
+
+[node name="GrabCheckRayCastLeft" type="RayCast2D" parent="."]
+position = Vector2(-6, -36)
+target_position = Vector2(-2, 0)
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
