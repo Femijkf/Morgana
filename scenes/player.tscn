@@ -362,6 +362,21 @@ tracks/0/keys = {
 "values": [51, 52, 53, 54, 55, 56]
 }
 
+[sub_resource type="Animation" id="Animation_tuyoq"]
+resource_name = "ledge_idle"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [171, 172, 173, 174, 175]
+}
+
 [sub_resource type="Animation" id="Animation_anltr"]
 resource_name = "peak"
 length = 0.583342
@@ -447,21 +462,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 1,
 "values": [76, 77, 78, 79, 80]
-}
-
-[sub_resource type="Animation" id="Animation_tuyoq"]
-resource_name = "ledge_idle"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
-"update": 1,
-"values": [171, 172, 173, 174, 175]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_hrffs"]
