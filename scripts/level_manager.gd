@@ -10,6 +10,11 @@ extends Node
 # --- CONFIGURATION ---
 @export var landing_position_x: float = 3000.0 
 
+
+# --- CAVE ---
+@onready var transition_anim = $SceneTransition/AnimationPlayer
+@onready var cave_spawn_point = get_node("../CaveSpawnPoint")
+
 func _ready():
 	if not player:
 		player = get_tree().get_first_node_in_group("player")
@@ -130,3 +135,40 @@ func _handle_cinematic_animations():
 		
 	if player.animation_player.has_animation("fall"):
 		player.animation_player.play("fall")
+
+func teleport_to_cave():
+	# 1. Start the Fade
+	transition_anim.play("circle_in")
+	await transition_anim.animation_finished
+	
+	# 2. Move the Player
+	if player and cave_spawn_point:
+		var cam = player.get_node_or_null("Camera2D")
+		
+		# --- CAMERA FIX ---
+		if cam:
+			# Temporarily disable limits so the camera doesn't get stuck 
+			# at the old cliff/level bottom
+			cam.limit_bottom = 1000000 
+			cam.limit_top = -1000000
+			
+		# Teleport Morgana
+		player.global_position = cave_spawn_point.global_position
+		player.velocity = Vector2.ZERO # Stop momentum
+		
+		if cam:
+			# Force the camera to snap to the player's new position instantly
+			cam.reset_smoothing() 
+			cam.force_update_scroll() 
+			
+			# If your cave has a specific new floor limit, set it here:
+			cam.limit_bottom = 30000
+	
+	# 3. Fade back out
+	transition_anim.play("circle_out")
+
+# Connect your Area2D signal to this
+func _on_cave_entrance_body_entered(body: Node2D) -> void:
+	if body.is_in_group("player"):
+		print("It was the player! Teleporting...")
+		teleport_to_cave()
