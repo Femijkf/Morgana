@@ -1,4 +1,4 @@
-[gd_scene load_steps=87 format=4 uid="uid://qkqc868sv4wn"]
+[gd_scene load_steps=105 format=4 uid="uid://qkqc868sv4wn"]
 
 [ext_resource type="Script" uid="uid://bikxv8ql3swmg" path="res://scripts/level_manager.gd" id="1_b2isc"]
 [ext_resource type="Texture2D" uid="uid://doim43nm12rtr" path="res://assets/tiles/Tiles-11.png" id="1_hvrd6"]
@@ -26,41 +26,44 @@
 [ext_resource type="Texture2D" uid="uid://ccpybgq5eo343" path="res://resources/pointlight.png" id="22_eedbu"]
 [ext_resource type="Script" uid="uid://cvcslen5o4281" path="res://scripts/torch.gd" id="23_7r63v"]
 [ext_resource type="Texture2D" uid="uid://dmlysv73ncmg4" path="res://resources/Fire+Sparks-Sheet.png" id="24_rb3io"]
+[ext_resource type="Texture2D" uid="uid://dps2l3lmfi6ip" path="res://assets/background_redone/Background-1.png" id="25_0p1sx"]
 [ext_resource type="Texture2D" uid="uid://dj4bge2mvxxvn" path="res://resources/Torch-1.png" id="25_x7a8r"]
 [ext_resource type="Texture2D" uid="uid://o1gdmp340f5t" path="res://assets/objects/Assets-3.png" id="26_4w6xv"]
+[ext_resource type="Texture2D" uid="uid://cuf8ltfujw35q" path="res://assets/background_redone/Background-2.png" id="26_qncc2"]
+[ext_resource type="Texture2D" uid="uid://omw48ekuigcv" path="res://assets/background_redone/Background-3.png" id="27_01mkw"]
 [ext_resource type="Texture2D" uid="uid://c7wgrfvguxe1h" path="res://assets/objects/Assets-4.png" id="27_7hmix"]
 [ext_resource type="Texture2D" uid="uid://cnrgcixdhtil3" path="res://assets/objects/Assets-7.png" id="28_n3wcc"]
+[ext_resource type="Texture2D" uid="uid://dxesewlnh5o8x" path="res://assets/background_redone/Background-4.png" id="28_wkw6o"]
+[ext_resource type="Texture2D" uid="uid://bkl2228vojnwt" path="res://assets/background_redone/Background-5.png" id="29_78o28"]
 [ext_resource type="Texture2D" uid="uid://chye18ibsj4tr" path="res://assets/objects/Assets-5.png" id="29_aahfp"]
+[ext_resource type="Texture2D" uid="uid://5rfqivnv2ok8" path="res://assets/background_redone/Background-6.png" id="30_bx7ib"]
 [ext_resource type="Texture2D" uid="uid://536q3sval4n1" path="res://assets/objects/Assets-1.png" id="30_qrjs1"]
 [ext_resource type="Texture2D" uid="uid://bkdpj2hrcb6jo" path="res://assets/objects/Assets-2.png" id="31_ltg8m"]
+[ext_resource type="Texture2D" uid="uid://c5cik3uv48yx" path="res://assets/background_redone/Background-7.png" id="31_pw80n"]
+[ext_resource type="Texture2D" uid="uid://bcvs7v16xq05w" path="res://assets/background_redone/Background-8.png" id="32_6maf1"]
 [ext_resource type="Texture2D" uid="uid://dwps4pqlvl5yp" path="res://assets/objects/Assets-6.png" id="32_tnpma"]
+[ext_resource type="Texture2D" uid="uid://0w1m05idwi1c" path="res://assets/background_redone/Background-9.png" id="33_0bmoe"]
 [ext_resource type="Texture2D" uid="uid://7b1skg5my5h3" path="res://assets/objects/Assets-8.png" id="33_hiiqp"]
+[ext_resource type="Texture2D" uid="uid://5uigswh577cc" path="res://assets/background_redone/Background-10.png" id="34_78e70"]
 [ext_resource type="PackedScene" uid="uid://bawha83a8d3c8" path="res://scenes/HealthBar.tscn" id="34_dkkmk"]
 [ext_resource type="PackedScene" uid="uid://canvcjcoa7s61" path="res://scenes/hud.tscn" id="35_sejw4"]
+[ext_resource type="Texture2D" uid="uid://c5qtqlwbkfcbt" path="res://assets/background_redone/Background-11.png" id="35_tbq4l"]
+[ext_resource type="Texture2D" uid="uid://des2a26bfdbwk" path="res://assets/background_redone/Background-12.png" id="36_2448u"]
 [ext_resource type="PackedScene" uid="uid://csx8nwspdmej6" path="res://scenes/killzone.tscn" id="36_qfp7r"]
+[ext_resource type="Texture2D" uid="uid://okrdac74nei1" path="res://assets/background_redone/Background-13.png" id="37_70saq"]
 [ext_resource type="PackedScene" uid="uid://b1anrx64qeh6h" path="res://scenes/water_body.tscn" id="37_agrr7"]
+[ext_resource type="Texture2D" uid="uid://uchys2t285pt" path="res://assets/background_redone/Background-14.png" id="38_pxmkn"]
+[ext_resource type="Texture2D" uid="uid://g0ps5bjmgh66" path="res://assets/background_redone/Background-15.png" id="39_2poe7"]
 [ext_resource type="PackedScene" uid="uid://bg05mvla08gb8" path="res://scenes/ChaseWolf.tscn" id="39_qg8x4"]
+[ext_resource type="Texture2D" uid="uid://cswxx1hg8p2jf" path="res://assets/background_redone/Background-16.png" id="40_nbo2r"]
+[ext_resource type="Texture2D" uid="uid://cldlv00637c8y" path="res://assets/background_redone/Background-17.png" id="41_2s8vu"]
+[ext_resource type="Texture2D" uid="uid://f7sondphcd1o" path="res://assets/background_redone/Background-18.png" id="42_2drfn"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_88m6t"]
 shader = ExtResource("3_nm6kf")
 shader_parameter/circle_size = 1.05
 shader_parameter/screen_width = 640.0
 shader_parameter/screen_height = 360.0
-
-[sub_resource type="Animation" id="Animation_nm6kf"]
-resource_name = "circle_in"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("ColorRect:material:shader_parameter/circle_size")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 2),
-"update": 0,
-"values": [1.05, 0.0]
-}
 
 [sub_resource type="Animation" id="Animation_88m6t"]
 length = 0.001
@@ -75,6 +78,21 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [1.05]
+}
+
+[sub_resource type="Animation" id="Animation_nm6kf"]
+resource_name = "circle_in"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:material:shader_parameter/circle_size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 2),
+"update": 0,
+"values": [1.05, 0.0]
 }
 
 [sub_resource type="Animation" id="Animation_oub7f"]
@@ -694,6 +712,7 @@ position = Vector2(195, -81)
 texture = ExtResource("21_4yyev")
 
 [node name="LevelBackground" type="ParallaxBackground" parent="Background"]
+visible = false
 
 [node name="BackgroundLayer" type="ParallaxLayer" parent="Background/LevelBackground"]
 position = Vector2(0, -113)
@@ -782,6 +801,123 @@ centered = false
 [node name="Sprite2D2" type="Sprite2D" parent="Background/LevelBackground/FilterLayer"]
 position = Vector2(390, 0)
 texture = ExtResource("20_yqdyt")
+centered = false
+
+[node name="LevelBackground2" type="ParallaxBackground" parent="Background"]
+
+[node name="BackgroundLayer" type="ParallaxLayer" parent="Background/LevelBackground2"]
+motion_scale = Vector2(0.2, 1)
+motion_mirroring = Vector2(780, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="Background/LevelBackground2/BackgroundLayer"]
+texture = ExtResource("25_0p1sx")
+centered = false
+
+[node name="Sprite2D2" type="Sprite2D" parent="Background/LevelBackground2/BackgroundLayer"]
+position = Vector2(390, 0)
+texture = ExtResource("26_qncc2")
+centered = false
+
+[node name="MidgroundLayer1" type="ParallaxLayer" parent="Background/LevelBackground2"]
+motion_scale = Vector2(0.4, 1)
+motion_mirroring = Vector2(780, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="Background/LevelBackground2/MidgroundLayer1"]
+texture = ExtResource("27_01mkw")
+centered = false
+
+[node name="Sprite2D2" type="Sprite2D" parent="Background/LevelBackground2/MidgroundLayer1"]
+position = Vector2(390, 0)
+texture = ExtResource("28_wkw6o")
+centered = false
+
+[node name="MidgroundLayer2" type="ParallaxLayer" parent="Background/LevelBackground2"]
+motion_scale = Vector2(0.6, 1)
+motion_mirroring = Vector2(780, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="Background/LevelBackground2/MidgroundLayer2"]
+texture = ExtResource("29_78o28")
+centered = false
+
+[node name="Sprite2D2" type="Sprite2D" parent="Background/LevelBackground2/MidgroundLayer2"]
+position = Vector2(390, 0)
+texture = ExtResource("30_bx7ib")
+centered = false
+
+[node name="MidgroundLayer3" type="ParallaxLayer" parent="Background/LevelBackground2"]
+motion_scale = Vector2(0.8, 1)
+motion_mirroring = Vector2(780, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="Background/LevelBackground2/MidgroundLayer3"]
+texture = ExtResource("31_pw80n")
+centered = false
+
+[node name="Sprite2D2" type="Sprite2D" parent="Background/LevelBackground2/MidgroundLayer3"]
+position = Vector2(390, 0)
+texture = ExtResource("32_6maf1")
+centered = false
+
+[node name="ForegroundLayer" type="ParallaxLayer" parent="Background/LevelBackground2"]
+motion_scale = Vector2(0.9, 1)
+motion_mirroring = Vector2(780, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="Background/LevelBackground2/ForegroundLayer"]
+texture = ExtResource("33_0bmoe")
+centered = false
+
+[node name="Sprite2D2" type="Sprite2D" parent="Background/LevelBackground2/ForegroundLayer"]
+position = Vector2(390, 0)
+texture = ExtResource("34_78e70")
+centered = false
+
+[node name="ForegroundLayer2" type="ParallaxLayer" parent="Background/LevelBackground2"]
+motion_mirroring = Vector2(780, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="Background/LevelBackground2/ForegroundLayer2"]
+texture = ExtResource("35_tbq4l")
+centered = false
+
+[node name="Sprite2D2" type="Sprite2D" parent="Background/LevelBackground2/ForegroundLayer2"]
+position = Vector2(390, 0)
+texture = ExtResource("36_2448u")
+centered = false
+
+[node name="ForegroundLayer3" type="ParallaxLayer" parent="Background/LevelBackground2"]
+motion_mirroring = Vector2(780, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="Background/LevelBackground2/ForegroundLayer3"]
+texture = ExtResource("37_70saq")
+centered = false
+
+[node name="Sprite2D2" type="Sprite2D" parent="Background/LevelBackground2/ForegroundLayer3"]
+position = Vector2(390, 0)
+texture = ExtResource("38_pxmkn")
+centered = false
+
+[node name="ForegroundLayer4" type="ParallaxLayer" parent="Background/LevelBackground2"]
+motion_mirroring = Vector2(780, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="Background/LevelBackground2/ForegroundLayer4"]
+texture = ExtResource("39_2poe7")
+centered = false
+
+[node name="Sprite2D2" type="Sprite2D" parent="Background/LevelBackground2/ForegroundLayer4"]
+position = Vector2(390, 0)
+texture = ExtResource("40_nbo2r")
+centered = false
+
+[node name="FilterLayer" type="ParallaxLayer" parent="Background/LevelBackground2"]
+motion_mirroring = Vector2(780, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="Background/LevelBackground2/FilterLayer"]
+modulate = Color(1, 1, 1, 0.168627)
+texture = ExtResource("41_2s8vu")
+centered = false
+
+[node name="Sprite2D2" type="Sprite2D" parent="Background/LevelBackground2/FilterLayer"]
+modulate = Color(1, 1, 1, 0.168627)
+position = Vector2(390, 0)
+texture = ExtResource("42_2drfn")
 centered = false
 
 [node name="DirectionalLight2D" type="DirectionalLight2D" parent="."]
