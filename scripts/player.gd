@@ -1,7 +1,11 @@
 extends CharacterBody2D
 
-const SPEED = 130.0
+const SPEED = 170.0
 const JUMP_VELOCITY = -300.0
+
+# Acceleration & Friction
+const RUN_ACCEL = SPEED / (6/60)  # Reaches top speed in ~6 frames
+const RUN_DECEL = SPEED / (3/60) # Stops in ~3 frames
 
 # Wall Jump
 const wallBounce = 300
@@ -13,13 +17,13 @@ var wallJumpTimer = 0.0
 var wallJumpDirection = 0
 
 # Dash
-const dashSpeed = 500
+const dashSpeed = 450
 const dashDuration = 0.2
 
 var dashActive = false
 var dashAvailable = false
 var dashTimer = 0.0
-var dashDirection = 0
+var dashDirection: Vector2 = Vector2.ZERO
 
 var ghostTimer = 0.05  # Time between each ghost
 var ghostTimerElapsed = 0.0
@@ -60,6 +64,8 @@ var cutscene_mode: bool = false
 
 @onready var healthBar = get_node("/root/Game/CanvasLayer/Control/HealthUI")
 
+@onready var camera: Camera2D = $Camera2D
+
 func _physics_process(delta: float) -> void:
 	# Ledge Hang
 	if isGrabbing:
@@ -75,7 +81,7 @@ func _physics_process(delta: float) -> void:
 			move_and_slide()
 		
 		# Let Go (Crouch or Down)
-		elif Input.is_action_just_pressed("crouch") or Input.is_action_pressed("ui_down"):
+		elif Input.is_action_just_pressed("crouch"):
 			isGrabbing = false
 			sprite_2d.offset.x = 0
 			velocity.y = 50 # Give a little downward push
@@ -84,7 +90,7 @@ func _physics_process(delta: float) -> void:
 		return
 	
 	# Add the gravity.
-	if not is_on_floor():
+	if not is_on_floor() and not dashActive:
 		velocity += get_gravity() * delta
 	
 	# If we are in a cutscene, don't allow player movement inputs
@@ -118,7 +124,9 @@ func _physics_process(delta: float) -> void:
 		dashTimer -= delta
 		ghostTimerElapsed += delta
 		sprite_2d.modulate = Color(255, 255, 255, 0.8)  # White colo
-
+		
+		velocity = dashDirection * dashSpeed
+		
 		# Spawn ghosts during dash
 		if ghostTimerElapsed >= ghostTimer:
 			spawnDashGhost()
@@ -127,16 +135,31 @@ func _physics_process(delta: float) -> void:
 		# End dash when the timer runs out
 		if dashTimer <= 0:
 			dashActive = false
-			velocity.x = 0  # Stop the dash movement
+			if velocity.y < 0:
+				velocity.y *= 0.4
 	else:
 		sprite_2d.modulate = Color(1, 1, 1)
 
 	# Overall Movement Control
 	if not wallJumpActive and not dashActive:
 		var base_speed = crouchSpeed if crouchActive else SPEED
-		velocity.x = direction * base_speed + activeKnockback.x
-		if knockbackActive:
-			velocity.y = activeKnockback.y
+		
+		if is_on_floor():
+			if direction != 0:
+				# Accelerating or turning around
+				velocity.x = move_toward(velocity.x, direction * base_speed, RUN_ACCEL * delta)
+			else:
+				# Letting go of the keys (Decelerating to a stop)
+				velocity.x = move_toward(velocity.x, 0, RUN_DECEL * delta)
+		else:
+			if abs(velocity.x) > base_speed:
+				# Increased friction from '2' to '12' to stop the infinite slide
+				velocity.x = move_toward(velocity.x, direction * base_speed, SPEED * 12 * delta)
+			else:
+				# Normal air control
+				velocity.x = move_toward(velocity.x, direction * base_speed, SPEED * 5 * delta)
+				
+		velocity.x += activeKnockback.x
 
 
 	elif wallJumpActive:
@@ -150,20 +173,26 @@ func _physics_process(delta: float) -> void:
 	
 	# Play animations
 	if is_on_floor():
-		if animation_player.current_animation == "fall":
-			animation_player.play("land")
-		elif animation_player.current_animation != "land":
-			if (direction == 0 and dashActive) or (direction != 0 and dashActive):
-				animation_player.play("dash")
-			elif direction == 0 and not crouchActive and not knockbackActive:
+		# 1. Highest priority: Dash
+		if dashActive:
+			animation_player.play("dash")
+		# 2. Next priority: Movement (Overrides landing!)
+		elif direction != 0 and not crouchActive and not knockbackActive:
+			animation_player.play("run")
+		# 3. Next priority: Crouching
+		elif crouchActive:
+			if direction == 0:
+				animation_player.play("crouch_idle")
+			else:
+				animation_player.play("crouch_walk")
+		# 4. Lowest priority: Standing still
+		elif not knockbackActive:
+			# Only play "land" if we just fell and aren't pressing any buttons
+			if animation_player.current_animation == "fall":
+				animation_player.play("land")
+			elif animation_player.current_animation != "land":
 				animation_player.play("idle")
-			elif crouchActive:
-				if direction == 0:
-					animation_player.play("crouch_idle")
-				else:
-					animation_player.play("crouch_walk")
-			elif not knockbackActive:
-				animation_player.play("run")
+				
 	elif dashActive:
 		animation_player.play("dash")
 	else:
@@ -271,14 +300,29 @@ func wallJump():
 			animation_player.play("wallslide")
 
 func dash():
-	var direction := Input.get_axis("move_left", "move_right")
+	# Capture both X and Y inputs 
+	var x_dir := Input.get_axis("move_left", "move_right")
+	var y_dir := Input.get_axis("jump", "crouch") 
+	
 	if is_on_floor():
 		dashAvailable = true
 		
 	if Input.is_action_just_pressed("dash") and dashAvailable and not dashActive and not crouchActive:
 		dashActive = true
-		dashDirection = direction if direction != 0 else (1 if sprite_2d.flip_h == false else -1)
-		velocity.x = dashDirection * dashSpeed
+		
+		# Combine inputs into a 2D direction
+		var input_vector = Vector2(x_dir, y_dir)
+		
+		# If no buttons are pressed, default to the direction she is facing
+		if input_vector == Vector2.ZERO:
+			input_vector.x = 1 if not sprite_2d.flip_h else -1
+			
+		# Normalize the vector to lock the angle and prevent double-speed diagonals
+		dashDirection = input_vector.normalized()
+		
+		# Apply the initial burst of speed in all directions
+		velocity = dashDirection * dashSpeed
+		
 		dashAvailable = false
 		dashTimer = dashDuration
 
@@ -356,6 +400,12 @@ func _check_ledge_grab():
 			sprite_2d.offset.x = 2 
 			
 		animation_player.play("ledge_idle")
+
+func update_camera_limits(left: float, right: float, top: float, bottom: float) -> void:
+	camera.limit_left = int(left)
+	camera.limit_right = int(right)
+	camera.limit_top = int(top)
+	camera.limit_bottom = int(bottom)
 
 #func _ready():
 	#ensureGhostContainer()

@@ -396,7 +396,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_vssxc"]
 resource_name = "run"
-length = 0.666675
+length = 0.666672
 loop_mode = 1
 step = 0.0833333
 tracks/0/type = "value"
@@ -510,12 +510,12 @@ libraries = {
 }
 
 [node name="RightWall" type="RayCast2D" parent="."]
-position = Vector2(-7, -19)
+position = Vector2(-7, -33)
 rotation = -1.5708
 target_position = Vector2(0, 15)
 
 [node name="LeftWall" type="RayCast2D" parent="."]
-position = Vector2(7, -19)
+position = Vector2(7, -33)
 rotation = 1.5708
 target_position = Vector2(0, 15)
 

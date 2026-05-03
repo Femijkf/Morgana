@@ -162,7 +162,7 @@ func teleport_to_cave():
 			cam.force_update_scroll() 
 			
 			# If your cave has a specific new floor limit, set it here:
-			cam.limit_bottom = 80000
+			cam.limit_bottom = 30000
 	
 	# 3. Fade back out
 	transition_anim.play("circle_out")

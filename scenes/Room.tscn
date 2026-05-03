@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://c4yyk81ox0nt0"]
+
+[ext_resource type="Script" uid="uid://bxy86fbh1gn0h" path="res://scenes/room.gd" id="1_llheb"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_liqgt"]
+size = Vector2(640, 360)
+
+[node name="Room" type="Area2D"]
+script = ExtResource("1_llheb")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_liqgt")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
