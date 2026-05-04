@@ -23,13 +23,10 @@ func updateHealthBar() -> void:
 func takeDamage(amount: int) -> void:
 	currentHealth = max(0, currentHealth - amount)
 	updateHealthBar()
-	if currentHealth <= 0:
-		die()
+	
+	# FIX: Removed the 'die()' call from here so it doesn't conflict 
+	# with the player's custom death animation.
 
 func heal(amount: int) -> void:
 	currentHealth = min(maxHealth, currentHealth + amount)
 	updateHealthBar()
-
-func die():
-	await get_tree().create_timer(0.31).timeout
-	get_tree().reload_current_scene()

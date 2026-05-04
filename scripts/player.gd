@@ -62,9 +62,11 @@ var cutscene_mode: bool = false
 @onready var grab_check_right =$GrabCheckRayCastRight
 @onready var grab_check_left =$GrabCheckRayCastLeft
 
-@onready var healthBar = get_node("/root/Game/CanvasLayer/Control/HealthUI")
+@onready var healthBar = get_node("/root/level1/CanvasLayer/Control/HealthUI")
 
 @onready var camera: Camera2D = $Camera2D
+
+var current_respawn_point: Vector2 = Vector2.ZERO
 
 func _physics_process(delta: float) -> void:
 	# Ledge Hang
@@ -89,15 +91,16 @@ func _physics_process(delta: float) -> void:
 			
 		return
 	
-	# Add the gravity.
-	if not is_on_floor() and not dashActive:
-		velocity += get_gravity() * delta
-	
-	# If we are in a cutscene, don't allow player movement inputs
+	# If we are in a cutscene (like a room transition), freeze everything
 	if cutscene_mode:
-		velocity.x = move_toward(velocity.x, 0, SPEED * delta) # Slow down X naturally
+		velocity.x = move_toward(velocity.x, 0, SPEED * delta)
+		velocity.y = 0 # FIX: Freeze vertical movement completely
 		move_and_slide()
 		return # STOP HERE
+		
+	# Add the gravity (Only if NOT in a cutscene)
+	if not is_on_floor() and not dashActive:
+		velocity += get_gravity() * delta
 	
 	# Get the input direction -1, 0, 1
 	var direction := Input.get_axis("move_left", "move_right")
@@ -291,11 +294,11 @@ func wallJump():
 		velocity.y = 30
 		sprite_2d.flip_h = false
 		if nextToRightWall():
-			sprite_2d.offset.x = 0
+			sprite_2d.offset.x = -2
 			sprite_2d.flip_h = false
 			animation_player.play("wallslide")
 		if nextToLeftWall():
-			sprite_2d.offset.x = -1
+			sprite_2d.offset.x = -3
 			sprite_2d.flip_h = true
 			animation_player.play("wallslide")
 
@@ -359,7 +362,10 @@ func emptyCeiling() -> bool:
 	return result
 
 func takeDamage(amount: int) -> void:
-	healthBar.takeDamage(amount)
+	# FIX: Only update the health UI if Godot actually found the node!
+	if healthBar:
+		healthBar.takeDamage(amount)
+		
 	var tween = create_tween()
 	# Take Damage Flicker Logic
 	tween.tween_property($Sprite2D, "material:shader_parameter/amount", 0.8, 0.0)
@@ -394,18 +400,69 @@ func _check_ledge_grab():
 		
 		if right_wall:
 			sprite_2d.flip_h = false
-			sprite_2d.offset.x = -3 
+			sprite_2d.offset.x = -5 
 		else:
 			sprite_2d.flip_h = true
-			sprite_2d.offset.x = 2 
+			sprite_2d.offset.x = 0 
 			
 		animation_player.play("ledge_idle")
 
 func update_camera_limits(left: float, right: float, top: float, bottom: float) -> void:
+	# 1. Update the limits
 	camera.limit_left = int(left)
 	camera.limit_right = int(right)
 	camera.limit_top = int(top)
 	camera.limit_bottom = int(bottom)
+	
+	# 2. Trigger the Celeste mid-air freeze
+	cutscene_mode = true
+	
+	# 3. Wait for the camera to pan 
+	# (Adjust 0.3 to match your Camera2D's Position Smoothing Speed. 
+	# A speed of 7.0 usually takes about 0.3 to 0.4 seconds to settle)
+	await get_tree().create_timer(0.3).timeout
+	
+	# 4. Unfreeze the player
+	cutscene_mode = false
 
-#func _ready():
-	#ensureGhostContainer()
+func _ready() -> void:
+	# Fallback: Default her spawn to wherever you placed her in the editor
+	current_respawn_point = global_position
+
+
+func _on_hazard_dectector_body_entered(body: Node2D) -> void:
+	# Ignore if she's already dead/in a cutscene
+	if cutscene_mode:
+		return 
+		
+	die()
+
+func die():
+	# 1. Lock player inputs
+	cutscene_mode = true 
+	
+	# 2. Max out the damage
+	takeDamage(999) 
+	
+	# 3. Optional: Add a little "Mario death hop" and freeze horizontal movement
+	velocity.x = 0
+	velocity.y = -250 
+	
+	# 4. Wait for 1 second for the death animation/hop to finish
+	await get_tree().create_timer(1.0).timeout
+	
+	# 5. NEW: The Respawn Logic!
+	# Teleport Morgana back to the room's spawn point
+	global_position = current_respawn_point
+	velocity = Vector2.ZERO
+	
+	# Refill her health via the UI
+	if healthBar:
+		healthBar.heal(999)
+		
+	# Snap the camera instantly so it doesn't swoosh across the map
+	if camera:
+		camera.reset_smoothing()
+		
+	# Unfreeze her so she can move again
+	cutscene_mode = false
