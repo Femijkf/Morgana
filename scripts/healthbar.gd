@@ -1,7 +1,6 @@
 extends Control
 
 @onready var healthBar = $HealthBar
-@onready var healthLabel = $Health
 
 var maxHealth: int = 100
 var currentHealth: int = 100

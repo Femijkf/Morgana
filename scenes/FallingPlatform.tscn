@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://dbcqr8kocfep6"]
+
+[ext_resource type="Script" uid="uid://cs8f1dwldcdy0" path="res://scenes/FallingPlatform.gd" id="1_4mgfl"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_oyxov"]
+size = Vector2(24, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4mgfl"]
+size = Vector2(26.0059, 24)
+
+[node name="FallingPlatform" type="AnimatableBody2D"]
+script = ExtResource("1_4mgfl")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_oyxov")
+
+[node name="PlayerDetector" type="Area2D" parent="."]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDetector"]
+position = Vector2(0, -1)
+shape = SubResource("RectangleShape2D_4mgfl")
+
+[connection signal="body_entered" from="PlayerDetector" to="." method="_on_player_detector_body_entered"]

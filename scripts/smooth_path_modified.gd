@@ -2,8 +2,8 @@ class_name SmoothPath
 extends Path2D
 
 @export var spline_length = 8
-@export var _smooth: bool: set = smooth
-@export var _straighten: bool: set = straighten
+#@export var _smooth: bool: set = smooth
+#@export var _straighten: bool: set = straighten
 @export var color: Color = Color(1,1,1,1)
 var width = 8
 

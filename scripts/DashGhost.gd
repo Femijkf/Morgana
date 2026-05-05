@@ -4,13 +4,13 @@ extends Sprite2D
 @onready var timer: Timer = $Timer
 
 # Initialize the ghost with the required parameters
-func initialize(texture: Texture2D, position: Vector2, region_rect: Rect2, flip_h: bool, color: Color):
-	self.texture = texture
-	self.position = position
+func initialize(_texture: Texture2D, _position: Vector2, _region_rect: Rect2, _flip_h: bool, _color: Color):
+	self.texture = _texture
+	self.position = _position
 	self.region_enabled = true
-	self.region_rect = region_rect
-	self.flip_h = flip_h
-	modulate = color  # Apply the color to the ghost
+	self.region_rect = _region_rect
+	self.flip_h = _flip_h
+	modulate = _color  # Apply the color to the ghost
 	self.z_index = -1
 
 func _ready():

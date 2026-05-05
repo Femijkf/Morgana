@@ -4,8 +4,8 @@ const SPEED = 170.0
 const JUMP_VELOCITY = -300.0
 
 # Acceleration & Friction
-const RUN_ACCEL = SPEED / (6/60)  # Reaches top speed in ~6 frames
-const RUN_DECEL = SPEED / (3/60) # Stops in ~3 frames
+const RUN_ACCEL = SPEED / (6.0/60.0)  # Reaches top speed in ~6 frames
+const RUN_DECEL = SPEED / (3.0/60.0) # Stops in ~3 frames
 
 # Wall Jump
 const wallBounce = 300
@@ -29,7 +29,7 @@ var ghostTimer = 0.05  # Time between each ghost
 var ghostTimerElapsed = 0.0
 
 # Crouching
-const crouchSpeed = 65
+const crouchSpeed = 65.0
 
 var crouchActive = false
 var underObject = false
@@ -430,7 +430,7 @@ func _ready() -> void:
 	current_respawn_point = global_position
 
 
-func _on_hazard_dectector_body_entered(body: Node2D) -> void:
+func _on_hazard_dectector_body_entered(_body: Node2D) -> void:
 	# Ignore if she's already dead/in a cutscene
 	if cutscene_mode:
 		return 

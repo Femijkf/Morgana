@@ -13,9 +13,9 @@ var springs = []
 var passes = 4
 
 #distance in pixels between each spring
-@export var distance_between_springs = 32
+@export var distance_between_springs = 32.0
 #number of springs in a scene
-@export var spring_number = 6
+@export var spring_number = 6.0
 
 #total water body length
 var water_length = distance_between_springs * spring_number
@@ -24,7 +24,7 @@ var water_length = distance_between_springs * spring_number
 @onready var water_spring = preload("res://scenes/water_spring.tscn")
 
 #the body of the water depth
-@export var depth = 1000
+@export var depth = 1000.0
 var target_height = global_position.y
 @onready var bottom = target_height + depth
 
@@ -68,14 +68,14 @@ func _ready():
 	
 	#area position stays in the middle of the water body
 	#the extents of the rectangle are half of the size of the water body
-	var rect_position = Vector2(total_length/2, depth/2)
-	var rect_extents = Vector2(total_length/2, depth/2)
+	var rect_position = Vector2(total_length/2.0, depth/2.0)
+	var rect_extents = Vector2(total_length/2.0, depth/2.0)
 	
 	water_body_area.position = rect_position
 	rectangle.set_size(rect_extents)
 	collision_shape.set_shape(rectangle)
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	
 	#moves all the springs accordingly
 	for i in springs:
