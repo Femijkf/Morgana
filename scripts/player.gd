@@ -73,23 +73,34 @@ func _physics_process(delta: float) -> void:
 	if isGrabbing:
 		velocity = Vector2.ZERO
 		
+		var facing_right = not sprite_2d.flip_h
+		if (facing_right and not grab_check_right.is_colliding()) or (not facing_right and not grab_check_left.is_colliding()):
+			# The ledge disappeared (it fell)! Force her to drop.
+			isGrabbing = false
+			sprite_2d.offset.x = 0
+			ledge_grab_cooldown = 0.2
+			
 		# Jump Up
-		if Input.is_action_just_pressed("jump"):
+		elif Input.is_action_just_pressed("jump"):
 			isGrabbing = false
 			sprite_2d.offset.x = 0
 			velocity.y = JUMP_VELOCITY
-			velocity.x = 50 if not sprite_2d.flip_h else -50
-			ledge_grab_cooldown = 0.3 # Brief cooldown after jumping up
+			velocity.x = 50 if facing_right else -50
+			ledge_grab_cooldown = 0.3 
 			move_and_slide()
+			return
 		
 		# Let Go (Crouch or Down)
 		elif Input.is_action_just_pressed("crouch"):
 			isGrabbing = false
 			sprite_2d.offset.x = 0
-			velocity.y = 50 # Give a little downward push
-			ledge_grab_cooldown = 0.4 # Longer cooldown so she falls past the ledge
+			velocity.y = 50 
+			ledge_grab_cooldown = 0.4 
+			return
 			
-		return
+		else:
+			# If we didn't jump, drop, or slip off, stay frozen
+			return
 	
 	# If we are in a cutscene (like a room transition), freeze everything
 	if cutscene_mode:
@@ -466,3 +477,16 @@ func die():
 		
 	# Unfreeze her so she can move again
 	cutscene_mode = false
+
+func apply_wind(direction: Vector2, speed: float, delta: float) -> void:
+	# A massive acceleration value so the wind instantly catches her 
+	# and overpowers gravity (which is usually around 980)
+	var wind_strength = 3500.0 * delta
+	
+	# If the wind is blowing left/right, override horizontal speed
+	if direction.x != 0:
+		velocity.x = move_toward(velocity.x, direction.x * speed, wind_strength)
+		
+	# If the wind is blowing up/down, override vertical speed
+	if direction.y != 0:
+		velocity.y = move_toward(velocity.y, direction.y * speed, wind_strength)

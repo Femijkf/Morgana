@@ -1,0 +1,42 @@
+[gd_scene load_steps=5 format=3 uid="uid://c8cq5l0n5bb70"]
+
+[ext_resource type="Script" uid="uid://defyfkjvtf78m" path="res://scenes/geyser.gd" id="1_e5k8l"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_315en"]
+size = Vector2(24, 138)
+
+[sub_resource type="Gradient" id="Gradient_e5k8l"]
+offsets = PackedFloat32Array(0.0162602, 1)
+colors = PackedColorArray(1, 1, 1, 0.501961, 1, 1, 1, 0)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_e5k8l"]
+size = Vector2(24, 24)
+
+[node name="Geyser" type="Area2D"]
+script = ExtResource("1_e5k8l")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -69)
+shape = SubResource("RectangleShape2D_315en")
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+amount = 40
+lifetime = 1.5
+emission_shape = 3
+emission_rect_extents = Vector2(12, 1)
+direction = Vector2(0, -1)
+spread = 10.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 250.0
+initial_velocity_max = 350.0
+scale_amount_min = 1.5
+scale_amount_max = 3.0
+color_ramp = SubResource("Gradient_e5k8l")
+
+[node name="SolidBase" type="StaticBody2D" parent="."]
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SolidBase"]
+shape = SubResource("RectangleShape2D_e5k8l")

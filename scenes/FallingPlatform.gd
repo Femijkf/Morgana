@@ -17,9 +17,6 @@ var start_position: Vector2
 func _ready() -> void:
 	# Save the exact starting coordinate so it knows where to return
 	start_position = global_position
-	
-	# Connect the detector's signal via code
-	detector.body_entered.connect(_on_player_detector_body_entered)
 
 func _physics_process(delta: float) -> void:
 	# If the fall has started, move the platform straight down
