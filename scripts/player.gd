@@ -3,6 +3,12 @@ extends CharacterBody2D
 const SPEED = 170.0
 const JUMP_VELOCITY = -300.0
 
+# Coyote Time & Jump Buffer
+const COYOTE_TIME = 0.1 # About 6 frames of grace time after leaving a ledge
+const JUMP_BUFFER_TIME = 0.1 # Remembers a jump press for 6 frames before landing
+var coyote_timer: float = 0.0
+var jump_buffer_timer: float = 0.0
+
 # Acceleration & Friction
 const RUN_ACCEL = SPEED / (6.0/60.0)  # Reaches top speed in ~6 frames
 const RUN_DECEL = SPEED / (3.0/60.0) # Stops in ~3 frames
@@ -67,8 +73,20 @@ var cutscene_mode: bool = false
 @onready var camera: Camera2D = $Camera2D
 
 var current_respawn_point: Vector2 = Vector2.ZERO
+var current_respawn_direction: int = 1 # NEW: 1 is Right, -1 is Left
 
 func _physics_process(delta: float) -> void:
+	# --- UPDATE JUMP TIMERS ---
+	if is_on_floor():
+		coyote_timer = COYOTE_TIME
+	else:
+		coyote_timer -= delta
+		
+	if Input.is_action_just_pressed("jump"):
+		jump_buffer_timer = JUMP_BUFFER_TIME
+	else:
+		jump_buffer_timer -= delta
+		
 	# Ledge Hang
 	if isGrabbing:
 		velocity = Vector2.ZERO
@@ -80,8 +98,9 @@ func _physics_process(delta: float) -> void:
 			sprite_2d.offset.x = 0
 			ledge_grab_cooldown = 0.2
 			
-		# Jump Up
-		elif Input.is_action_just_pressed("jump"):
+		# Jump Up out of Ledge Grab
+		elif jump_buffer_timer > 0.0: # FIX: Replaced Input.is_action_just_pressed
+			jump_buffer_timer = 0.0 # Consume the jump so it doesn't fire twice
 			isGrabbing = false
 			sprite_2d.offset.x = 0
 			velocity.y = JUMP_VELOCITY
@@ -267,7 +286,6 @@ func wallJump():
 	if Input.is_action_just_pressed("jump") and Engine.time_scale < 1.0:
 		Engine.time_scale = 1.0 # Reset time
 		# POWERFUL LAUNCH: 
-		# Adjust 600 (horizontal) and -500 (vertical) to fit your cliff gap
 		velocity = Vector2(600, -500) 
 		
 		var manager = get_node_or_null("/root/level1/LevelManager")
@@ -275,17 +293,19 @@ func wallJump():
 			manager.start_falling_sequence()
 		return
 		
-	# Handle jump. 
-	# is_action_pressed = hold space jump
-	# is_action_just_pressed = press & release space jump
-	if Input.is_action_pressed("jump") and (is_on_floor() and emptyCeiling() or isGrabbing):
+	# --- NEW REGULAR JUMP (With Coyote Time & Buffering) ---
+	var can_coyote_jump = (coyote_timer > 0.0) and emptyCeiling()
+	
+	if jump_buffer_timer > 0.0 and (can_coyote_jump or isGrabbing):
+		jump_buffer_timer = 0.0 # Consume the jump buffer
+		coyote_timer = 0.0 # Consume coyote time to prevent double jumps in the air
 		isGrabbing = false
 		velocity.y = JUMP_VELOCITY
 	
-	# Handle wall jump
-	# WallJump --> velocity off wall, JumpWall --> velcoity of height
-	if Input.is_action_just_pressed("jump") and not is_on_floor():
+	# --- NEW WALL JUMP (With Buffering) ---
+	if jump_buffer_timer > 0.0 and not is_on_floor():
 		if nextToRightWall():
+			jump_buffer_timer = 0.0 # Consume the jump buffer
 			wallJumpActive = true
 			wallJumpDirection = -1
 			wallJumpTimer = wallJumpDuration
@@ -293,7 +313,8 @@ func wallJump():
 			velocity.x -= wallBounce
 			velocity.y = wallJumpVertical
 			
-		if nextToLeftWall():
+		elif nextToLeftWall():
+			jump_buffer_timer = 0.0 # Consume the jump buffer
 			wallJumpActive = true
 			wallJumpDirection = 1
 			wallJumpTimer = wallJumpDuration
@@ -316,11 +337,12 @@ func wallJump():
 func dash():
 	# Capture both X and Y inputs 
 	var x_dir := Input.get_axis("move_left", "move_right")
-	var y_dir := Input.get_axis("jump", "crouch") 
+	var y_dir := Input.get_axis("move_up", "crouch")
 	
 	if is_on_floor():
 		dashAvailable = true
 		
+	# 1. Start the Dash
 	if Input.is_action_just_pressed("dash") and dashAvailable and not dashActive and not crouchActive:
 		dashActive = true
 		
@@ -339,6 +361,20 @@ func dash():
 		
 		dashAvailable = false
 		dashTimer = dashDuration
+
+	# 2. FIX: Dash Input Grace Period (Forgiveness)
+	# Allows the player to correct their direction for the first ~3 frames (0.05 seconds) of the dash
+	elif dashActive and (dashDuration - dashTimer) <= 0.05:
+		var input_vector = Vector2(x_dir, y_dir)
+		
+		# If they are holding a direction during this tiny window, verify it
+		if input_vector != Vector2.ZERO:
+			var new_direction = input_vector.normalized()
+			
+			# If the input changed (e.g., they pressed Up a millisecond late), update the dash instantly!
+			if new_direction != dashDirection:
+				dashDirection = new_direction
+				velocity = dashDirection * dashSpeed
 
 func spawnDashGhost():
 	# Player Dash Flicker Logic
@@ -452,20 +488,33 @@ func die():
 	# 1. Lock player inputs
 	cutscene_mode = true 
 	
+	# --- NEW: HARD RESET ALL STATES ---
+	# This wipes the slate clean so absolutely nothing carries over when she respawns!
+	dashActive = false
+	dashTimer = 0.0
+	wallJumpActive = false
+	isGrabbing = false
+	crouchActive = false
+	knockbackActive = false
+	velocity = Vector2.ZERO
+	# ----------------------------------
+	
 	# 2. Max out the damage
 	takeDamage(999) 
 	
-	# 3. Optional: Add a little "Mario death hop" and freeze horizontal movement
-	velocity.x = 0
-	velocity.y = -250 
-	
-	# 4. Wait for 1 second for the death animation/hop to finish
+	# 3. Wait for 1 second for the death animation to finish
 	await get_tree().create_timer(1.0).timeout
 	
-	# 5. NEW: The Respawn Logic!
+	# 4. The Respawn Logic!
 	# Teleport Morgana back to the room's spawn point
 	global_position = current_respawn_point
 	velocity = Vector2.ZERO
+	
+	# NEW: Set the facing direction!
+	if current_respawn_direction == 1:
+		sprite_2d.flip_h = false
+	else:
+		sprite_2d.flip_h = true
 	
 	# Refill her health via the UI
 	if healthBar:
