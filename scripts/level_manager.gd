@@ -74,7 +74,7 @@ func start_falling_sequence():
 	
 	# Lock Inputs & Clear Horizontal Momentum
 	if player:
-		player.cutscene_mode = true
+		player.cinematic_fall_mode = true
 		player.velocity.x = 0
 		if player.animation_player.has_animation("takeoff"):
 			player.animation_player.play("takeoff")
@@ -85,6 +85,7 @@ func start_falling_sequence():
 	if cam:
 		cam.make_current()
 		cam.limit_bottom = 1000000 
+		cam.position_smoothing_enabled = false
 		var cam_tween = create_tween().set_parallel(true)
 		cam_tween.tween_property(cam, "zoom", Vector2(2.4, 2.4), 1.0).set_trans(Tween.TRANS_SINE)
 		cam_tween.tween_property(cam, "offset:x", 60, 1.0).set_trans(Tween.TRANS_SINE)
@@ -118,7 +119,7 @@ func start_falling_sequence():
 	# --- STEP 4: RECOVERY & CAMERA CENTERING ---
 	await fade_out.finished
 	if player:
-		player.cutscene_mode = false 
+		player.cinematic_fall_mode = false 
 		
 	if cam:
 		var cam_reset = create_tween().set_parallel(true)
@@ -126,12 +127,14 @@ func start_falling_sequence():
 		cam_reset.tween_property(cam, "offset", Vector2.ZERO, 1.0).set_trans(Tween.TRANS_SINE)
 		cam_reset.tween_property(cam, "zoom", Vector2(1.0, 1.0), 1.0).set_trans(Tween.TRANS_SINE)
 		cam.limit_bottom = 29875
+		await get_tree().create_timer(2.0).timeout
+		cam.position_smoothing_enabled = true
 		
 # --- HELPER: ANIMATION HANDLING ---
 func _handle_cinematic_animations():
 	while player.velocity.y < 0:
 		await get_tree().process_frame
-		if not player.cutscene_mode: return
+		if not player.cinematic_fall_mode: return
 		
 	if player.animation_player.has_animation("fall"):
 		player.animation_player.play("fall")
@@ -162,7 +165,7 @@ func teleport_to_cave():
 			cam.force_update_scroll() 
 			
 			# If your cave has a specific new floor limit, set it here:
-			cam.limit_bottom = 80000
+			cam.limit_bottom = 30000
 	
 	# 3. Fade back out
 	transition_anim.play("circle_out")

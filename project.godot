@@ -70,6 +70,7 @@ move_up={
 
 [layer_names]
 
+2d_physics/layer_2="OneWayPlatforms"
 2d_physics/layer_3="CinematicEntities"
 2d_physics/layer_4="Hazards"
 

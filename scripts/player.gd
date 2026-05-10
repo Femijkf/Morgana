@@ -56,6 +56,7 @@ var DashGhost = preload("res://scenes/DashGhost.tscn")
 
 #Cutscene
 var cutscene_mode: bool = false
+var cinematic_fall_mode: bool = false
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var sprite_2d: Sprite2D = $Sprite2D 
@@ -73,9 +74,18 @@ var cutscene_mode: bool = false
 @onready var camera: Camera2D = $Camera2D
 
 var current_respawn_point: Vector2 = Vector2.ZERO
-var current_respawn_direction: int = 1 # NEW: 1 is Right, -1 is Left
+var current_respawn_direction: int = 1 # 1 is Right, -1 is Left
+
+var drop_through_timer: float = 0.0
 
 func _physics_process(delta: float) -> void:
+	# --- DROP THROUGH TIMER ---
+	if drop_through_timer > 0.0:
+		drop_through_timer -= delta
+		if drop_through_timer <= 0.0:
+			# Turn the one-way floor mask back on!
+			set_collision_mask_value(2, true)
+	
 	# --- UPDATE JUMP TIMERS ---
 	if is_on_floor():
 		coyote_timer = COYOTE_TIME
@@ -128,6 +138,14 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 		return # STOP HERE
 		
+	# --- CINEMATIC FALL MODE ---
+	if cinematic_fall_mode:
+		if not is_on_floor() and not dashActive:
+			velocity += get_gravity() * delta
+		velocity.x = move_toward(velocity.x, 0, SPEED * delta)
+		move_and_slide()
+		return # STOP HERE (So player inputs are ignored)
+	
 	# Add the gravity (Only if NOT in a cutscene)
 	if not is_on_floor() and not dashActive:
 		velocity += get_gravity() * delta
@@ -293,16 +311,30 @@ func wallJump():
 			manager.start_falling_sequence()
 		return
 		
-	# --- NEW REGULAR JUMP (With Coyote Time & Buffering) ---
+	# --- REGULAR JUMP SETUP ---
 	var can_coyote_jump = (coyote_timer > 0.0) and emptyCeiling()
 	
+	# --- DROP THROUGH ONE-WAY PLATFORMS ---
+	# Uses the coyote jump check so crouching doesn't accidentally cancel the drop!
+	if Input.is_action_pressed("crouch") and (is_on_floor() or can_coyote_jump):
+		jump_buffer_timer = 0.0 # Consume the jump buffer
+		coyote_timer = 0.0 
+		
+		# Temporarily turn off Collision Mask Layer 2 (One-Way Platforms)
+		set_collision_mask_value(2, false)
+		
+		# Start our safe manual timer instead of using 'await'
+		drop_through_timer = 0.3 
+		return # Stop here so she doesn't actually jump up!
+		
+	# --- REGULAR JUMP (With Coyote Time & Buffering) ---
 	if jump_buffer_timer > 0.0 and (can_coyote_jump or isGrabbing):
 		jump_buffer_timer = 0.0 # Consume the jump buffer
 		coyote_timer = 0.0 # Consume coyote time to prevent double jumps in the air
 		isGrabbing = false
 		velocity.y = JUMP_VELOCITY
 	
-	# --- NEW WALL JUMP (With Buffering) ---
+	# --- WALL JUMP (With Buffering) ---
 	if jump_buffer_timer > 0.0 and not is_on_floor():
 		if nextToRightWall():
 			jump_buffer_timer = 0.0 # Consume the jump buffer
@@ -322,6 +354,7 @@ func wallJump():
 			velocity.x = wallBounce
 			velocity.y = wallJumpVertical
 			
+	# --- WALL SLIDE (Gravity Clamp & Animation) ---
 	if nextToWall() and velocity.y > 30:
 		velocity.y = 30
 		sprite_2d.flip_h = false
@@ -427,7 +460,7 @@ func applyKnockback(direction: Vector2, force: float, knockbackDuration: float) 
 	knockbackTimer = knockbackDuration
 
 func _check_ledge_grab():
-	if velocity.y < 0 or is_on_floor() or isGrabbing or dashActive or cutscene_mode or ledge_grab_cooldown > 0:
+	if velocity.y < 0 or is_on_floor() or isGrabbing or dashActive or cutscene_mode or cinematic_fall_mode or ledge_grab_cooldown > 0:
 		return
 
 	var right_air = not grab_hand_right.is_colliding()
@@ -479,7 +512,7 @@ func _ready() -> void:
 
 func _on_hazard_dectector_body_entered(_body: Node2D) -> void:
 	# Ignore if she's already dead/in a cutscene
-	if cutscene_mode:
+	if cutscene_mode or cinematic_fall_mode:
 		return 
 		
 	die()

@@ -487,6 +487,7 @@ radius = 6.5
 height = 46.0
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
+collision_mask = 3
 script = ExtResource("1_gmuu8")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -538,18 +539,22 @@ position = Vector2(0, -25)
 [node name="GrabHandRayCastRight" type="RayCast2D" parent="."]
 position = Vector2(6, -40)
 target_position = Vector2(3, 0)
+collision_mask = 3
 
 [node name="GrabHandRayCastLeft" type="RayCast2D" parent="."]
 position = Vector2(-6, -40)
 target_position = Vector2(-3, 0)
+collision_mask = 3
 
 [node name="GrabCheckRayCastRight" type="RayCast2D" parent="."]
 position = Vector2(6, -35)
 target_position = Vector2(3, 0)
+collision_mask = 3
 
 [node name="GrabCheckRayCastLeft" type="RayCast2D" parent="."]
 position = Vector2(-6, -35)
 target_position = Vector2(-3, 0)
+collision_mask = 3
 
 [node name="HazardDectector" type="Area2D" parent="."]
 collision_layer = 0
