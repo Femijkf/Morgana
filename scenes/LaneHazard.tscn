@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3 uid="uid://bfletfiitnpw2"]
+
+[ext_resource type="Script" uid="uid://digqe6m4pmxxp" path="res://scenes/LaneHazard.gd" id="1_gb4v0"]
+[ext_resource type="FontFile" uid="uid://byh0y3hsst27a" path="res://assets/fonts/PixelOperator8.ttf" id="2_a53fx"]
+[ext_resource type="Texture2D" uid="uid://bqouq2ifskwn2" path="res://assets/testtiles/Tiles-1.png" id="3_x4yej"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_a53fx"]
+size = Vector2(24, 24)
+
+[node name="LaneHazard" type="Area2D"]
+script = ExtResource("1_gb4v0")
+
+[node name="WarningLabel" type="Label" parent="."]
+z_index = 1
+offset_left = -20.0
+offset_top = -100.0
+offset_right = 20.0
+offset_bottom = -76.0
+theme_override_fonts/font = ExtResource("2_a53fx")
+theme_override_font_sizes/font_size = 24
+text = "!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HazardSprite" type="Sprite2D" parent="."]
+texture = ExtResource("3_x4yej")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_a53fx")

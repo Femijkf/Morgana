@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+signal player_died
+
 const SPEED = 170.0
 const JUMP_VELOCITY = -300.0
 
@@ -57,6 +59,12 @@ var DashGhost = preload("res://scenes/DashGhost.tscn")
 #Cutscene
 var cutscene_mode: bool = false
 var cinematic_fall_mode: bool = false
+
+# Minigame
+var lane_fall_mode: bool = false
+var current_lane: int = 2 # Starts in the middle lane (0, 1, 2, 3, 4)
+var lane_positions: Array[float] = [] # The X coordinates of the tracks
+var lane_fall_speed: float = 175.0 # 250 pixels/second
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var sprite_2d: Sprite2D = $Sprite2D 
@@ -149,6 +157,29 @@ func _physics_process(delta: float) -> void:
 	# Add the gravity (Only if NOT in a cutscene)
 	if not is_on_floor() and not dashActive:
 		velocity += get_gravity() * delta
+	
+	# --- LANE FALLING MINIGAME MODE ---
+	if lane_fall_mode:
+		# 1. Switch Lanes instantly on button press
+		if Input.is_action_just_pressed("move_left") and current_lane > 0:
+			current_lane -= 1
+		elif Input.is_action_just_pressed("move_right") and current_lane < lane_positions.size() - 1:
+			current_lane += 1
+			
+		# 2. Smoothly glide to the target lane's X position
+		var target_x = lane_positions[current_lane]
+		global_position.x = lerp(global_position.x, target_x, 15.0 * delta)
+		
+		# 3. FIXED SPEED: Override gravity completely for 0 acceleration
+		velocity.y = lane_fall_speed
+			
+		move_and_slide()
+		
+		# 4. Play falling animation
+		if animation_player.has_animation("fall"):
+			animation_player.play("fall")
+			
+		return # STOP HERE (Blocks all normal movement/gravity)
 	
 	# Get the input direction -1, 0, 1
 	var direction := Input.get_axis("move_left", "move_right")
@@ -529,8 +560,13 @@ func die():
 	isGrabbing = false
 	crouchActive = false
 	knockbackActive = false
+	lane_fall_mode = false
 	velocity = Vector2.ZERO
 	# ----------------------------------
+	
+	# NEW: Ensure camera smoothing gets turned back on instantly
+	if camera:
+		camera.position_smoothing_enabled = true
 	
 	# 2. Max out the damage
 	takeDamage(999) 
@@ -559,6 +595,9 @@ func die():
 		
 	# Unfreeze her so she can move again
 	cutscene_mode = false
+	
+	# NEW: Fire the signal to tell the Director to reset!
+	player_died.emit()
 
 func apply_wind(direction: Vector2, speed: float, delta: float) -> void:
 	# A massive acceleration value so the wind instantly catches her 
